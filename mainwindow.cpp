@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 /***********************************
  *
- * TCP client start button clicked
+ * Connect button clicked
  *
  ***********************************/
 void MainWindow::onConnectButtonClicked()
@@ -116,7 +116,7 @@ void MainWindow::onTcpClientNewConnection(const QString &from, quint16 port)
 
 /***********************************
  *
- * TCP client stop button clicked
+ * Stop button clicked
  *
  ***********************************/
 void MainWindow::onStopButtonClicked()
@@ -174,7 +174,7 @@ void MainWindow::onTcpClientTimeOut()
 
 /***********************************
  *
- * TCP client diconnect button clicked
+ * Diconnect button clicked
  *
  ***********************************/
 void MainWindow::onDisconnectButtonClicked()
@@ -184,7 +184,7 @@ void MainWindow::onDisconnectButtonClicked()
 
 /***********************************
  *
- * TCP client disconnected
+ * Disconnected
  *
  ***********************************/
 void MainWindow::onDisconnected()
@@ -218,8 +218,7 @@ void MainWindow::onDisconnected()
 
 /***********************************
  *
- * TCP client append a message
- * to message browser
+ * Append a message to message browser
  *
  ***********************************/
 void MainWindow::onAppendMessage(const QString &from, const QString &message)
