@@ -61,8 +61,32 @@ void MyUDP::readyRead()
     socket->readDatagram(buffer.data(), buffer.size(),
                          &sender, &senderPort);
 
-    //qDebug()<<buffer.toHex();
-    emit newMessage(sender.toString(), buffer.toHex());
+    if(buffer.left(7)=="ADCDATA")
+    {
+        acceptingADCData=true;
+        array.clear();
+    }
+
+    if(acceptingADCData)
+    {
+        array.append(buffer);
+        //qDebug()<<array.toHex();
+    }
+    else
+    {
+        emit newMessage(sender.toString(), buffer.toHex());
+    }
+
+    if(array.right(7)=="ADCSTOP")
+    {
+        //array.append(buffer);
+        acceptingADCData=false;
+        qDebug()<<array.size();
+        array=array.mid(7,array.size()-14);
+        emit newMessage(sender.toString(), array.toHex());
+        qDebug()<<array.size();
+        //qDebug()<<array.right(7);
+    }
 }
 
 void MyUDP::unbindPort()

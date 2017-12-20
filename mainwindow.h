@@ -61,17 +61,16 @@ private slots:
     void onTcpClientDisconnectButtonClicked();
     void onTcpClientDisconnected();
     void onTcpClientSendMessage();
-    void onTcpClientAppendMessage(const QString &from, const QString &message);
+    void onAppendMessage(const QString &from, const QString &message);
 
     /******************************************************************************
      *
      * UDP
      *
      ******************************************************************************/
-    void onUdpButtonClicked();
-    void onUdpStopButtonClicked();
-    void onUdpSendMessage();
-    void onUdpAppendMessage(const QString &from, const QString &message);
+    //void onUdpButtonClicked();
+    //void onUdpStopButtonClicked();
+    //void onUdpAppendMessage(const QString &from, const QString &message);
 
     void onRefreshButtonClicked();
 

@@ -49,6 +49,7 @@ private slots:
 private:
     QTcpSocket *tcpSocket;
     QByteArray array;
+    bool acceptingADCData=false;
 };
 
 #endif // MYTCPCLIENT_H

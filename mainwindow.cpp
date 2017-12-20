@@ -36,24 +36,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     {
         myudp = new MyUDP;
     }
-    connect(ui->button_UdpSend, SIGNAL(clicked()), this, SLOT(onUdpSendMessage()));         // UDP can send message directly without connection
-    connect(ui->lineEdit_UdpSend, SIGNAL(returnPressed()), this, SLOT(onUdpSendMessage())); // UDP can send message directly without connection
 
     // buttons
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
-    connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
     connect(ui->button_Refresh, SIGNAL(clicked()), this, SLOT(onRefreshButtonClicked()));
 
     connect(ui->openWaveform, SIGNAL(clicked(bool)), this, SLOT(openWaveform()));
 }
-
-/******************************************************************************
- ******************************************************************************
- **
- ** TCP Client
- **
- ******************************************************************************
- ******************************************************************************/
 
 /***********************************
  *
@@ -64,16 +53,30 @@ void MainWindow::onTcpClientButtonClicked()
 {
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
 
-    if (setupConnection(TCPCLIENT))
+    if (setupConnection(UDPSERVER))
     {
-        ui->statusBar->showMessage(messageTCP + "Connecting to " + tcpClientTargetAddr.toString() + ": " + QString::number(tcpClientTargetPort), 0);
-        ui->lineEdit_TcpClientTargetIP->setDisabled(true);
-        ui->lineEdit_TcpClientTargetPort->setDisabled(true);
-        ui->button_TcpClient->setText("Stop");
+        //ui->statusBar->showMessage(messageUDP + "Listerning to " + localAddr.toString() + ": " + QString::number(udpListenPort), 0);
+        //connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onUdpStopButtonClicked()));
 
-        connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientStopButtonClicked()));
-        connect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
-        connect(mytcpclient, SIGNAL(connectionFailed()), this, SLOT(onTcpClientTimeOut()));
+        ui->lineEdit_UdpListenPort->setDisabled(true);
+        connect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+
+        if (setupConnection(TCPCLIENT))
+        {
+            //ui->statusBar->showMessage(messageTCP + "Connecting to " + tcpClientTargetAddr.toString() + ": " + QString::number(tcpClientTargetPort), 0);
+            ui->lineEdit_TcpClientTargetIP->setDisabled(true);
+            ui->lineEdit_TcpClientTargetPort->setDisabled(true);
+            ui->button_TcpClient->setText("Stop");
+
+            connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientStopButtonClicked()));
+            connect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
+            connect(mytcpclient, SIGNAL(connectionFailed()), this, SLOT(onTcpClientTimeOut()));
+        }
+    }
+    else
+    {
+        ui->statusBar->showMessage(messageUDP + "Failed to listen to: " + localAddr.toString() + ": " + QString::number(udpListenPort), 2000);
+        connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
     }
 
     saveSettings();
@@ -101,7 +104,7 @@ void MainWindow::onTcpClientNewConnection(const QString &from, quint16 port)
     ui->statusBar->showMessage(messageTCP + "Connected to " + from + ": " + QString::number(port), 0);
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientDisconnectButtonClicked()));
 
-    connect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onTcpClientAppendMessage(QString, QString)));
+    connect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
     connect(ui->button_TcpClientSend, SIGNAL(clicked()), this, SLOT(onTcpClientSendMessage()));
     connect(ui->lineEdit_TcpClientSend, SIGNAL(returnPressed()), this, SLOT(onTcpClientSendMessage()));
 }
@@ -127,6 +130,10 @@ void MainWindow::onTcpClientStopButtonClicked()
     ui->lineEdit_TcpClientSend->setDisabled(true);
     ui->textBrowser_TcpClientMessage->setDisabled(true);
 
+    disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    myudp->unbindPort();
+    ui->lineEdit_UdpListenPort->setDisabled(false);
+
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
 }
 
@@ -145,6 +152,10 @@ void MainWindow::onTcpClientTimeOut()
     ui->button_TcpClient->setText("Connect");
     ui->lineEdit_TcpClientTargetIP->setDisabled(false);
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
+
+    disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    myudp->unbindPort();
+    ui->lineEdit_UdpListenPort->setDisabled(false);
 
     mytcpclient->closeClient();
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
@@ -169,7 +180,7 @@ void MainWindow::onTcpClientDisconnected()
 {
     ui->statusBar->showMessage(messageTCP + "Disconnected from server", 2000);
     disconnect(mytcpclient, SIGNAL(myClientDisconnected()), this, SLOT(onTcpClientDisconnected()));
-    disconnect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onTcpClientAppendMessage(QString, QString)));
+    disconnect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
     disconnect(ui->button_TcpClientSend, SIGNAL(clicked()), this, SLOT(onTcpClientSendMessage()));
     disconnect(ui->lineEdit_TcpClientSend, SIGNAL(returnPressed()), this, SLOT(onTcpClientSendMessage()));
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientDisconnectButtonClicked()));
@@ -186,6 +197,11 @@ void MainWindow::onTcpClientDisconnected()
     mytcpclient->closeClient();
     mytcpclient->close();
 
+    // UDP
+    disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    myudp->unbindPort();
+    ui->lineEdit_UdpListenPort->setDisabled(false);
+
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
 }
 
@@ -195,12 +211,12 @@ void MainWindow::onTcpClientDisconnected()
  * to message browser
  *
  ***********************************/
-void MainWindow::onTcpClientAppendMessage(const QString &from, const QString &message)
+void MainWindow::onAppendMessage(const QString &from, const QString &message)
 {
-    if (from.isEmpty() || message.isEmpty())
-    {
-        return;
-    }
+    //if (from.isEmpty() || message.isEmpty())
+    //{
+    //    return;
+    //}
 
     QTextCursor cursor(ui->textBrowser_TcpClientMessage->textCursor());
     cursor.movePosition(QTextCursor::End);
@@ -237,126 +253,9 @@ void MainWindow::onTcpClientSendMessage()
 
     mytcpclient->sendMessage(text);
 
-    onTcpClientAppendMessage("Me", text);
+    onAppendMessage("Me", text);
     ui->lineEdit_TcpClientSend->clear();
 }
-
-/******************************************************************************
- ******************************************************************************
- **
- ** UDP
- **
- ******************************************************************************
- ******************************************************************************/
-
-/***********************************
- *
- * UDP listen button clicked
- *
- ***********************************/
-void MainWindow::onUdpButtonClicked()
-{
-    disconnect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
-
-    if (setupConnection(UDPSERVER))
-    {
-        ui->statusBar->showMessage(messageUDP + "Listerning to " + localAddr.toString() + ": " + QString::number(udpListenPort), 0);
-        connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpStopButtonClicked()));
-        ui->button_Udp->setText("Stop");
-
-        ui->button_UdpSend->setDisabled(false);
-        ui->lineEdit_UdpSend->setDisabled(false);
-        ui->textBrowser_UdpMessage->setDisabled(false);
-
-        ui->lineEdit_UdpListenPort->setDisabled(true);
-        connect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onUdpAppendMessage(QString, QString)));
-    }
-    else
-    {
-        ui->statusBar->showMessage(messageUDP + "Failed to listen to: " + localAddr.toString() + ": " + QString::number(udpListenPort), 2000);
-        connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
-    }
-
-    saveSettings();
-}
-
-/***********************************
- *
- * UDP stop button clicked
- *
- ***********************************/
-void MainWindow::onUdpStopButtonClicked()
-{
-    disconnect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpStopButtonClicked()));
-
-    ui->statusBar->showMessage(messageUDP + "Stopped", 2000);
-    disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onUdpAppendMessage(QString, QString)));
-    ui->button_Udp->setText("Start");
-    myudp->unbindPort();
-    ui->lineEdit_UdpListenPort->setDisabled(false);
-
-    connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
-}
-
-/***********************************
- *
- * UDP append a message
- * to message browser
- *
- ***********************************/
-void MainWindow::onUdpAppendMessage(const QString &from, const QString &message)
-{
-    //if (from.isEmpty() || message.isEmpty())
-    //{
-    //    return;
-    //}
-
-    QTextCursor cursor(ui->textBrowser_UdpMessage->textCursor());
-    cursor.movePosition(QTextCursor::End);
-
-    if (from == "System")
-    {
-        QColor color = ui->textBrowser_UdpMessage->textColor();
-        ui->textBrowser_UdpMessage->setTextColor(Qt::gray);
-        ui->textBrowser_UdpMessage->append(message);
-        ui->textBrowser_UdpMessage->setTextColor(color);
-    }
-    else
-    {
-        QTextTable *table = cursor.insertTable(1, 2, tableFormatPri);
-        table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
-        table->cellAt(0, 1).firstCursorPosition().insertText(message);
-    }
-    QScrollBar *bar = ui->textBrowser_UdpMessage->verticalScrollBar();
-    bar->setValue(bar->maximum());
-}
-
-/***********************************
- *
- * Send message through UDP
- *
- ***********************************/
-void MainWindow::onUdpSendMessage()
-{
-    QString text = ui->lineEdit_UdpSend->text();
-    if (text.isEmpty())
-    {
-        return;
-    }
-
-    udpTargetAddr.setAddress(ui->lineEdit_UdpTargetIP->text());
-    udpTargetPort = ui->lineEdit_UdpTargetPort->text().toInt();
-    myudp->sendMessage(udpTargetAddr, udpTargetPort, text);
-
-    onUdpAppendMessage("Me", text);
-    ui->lineEdit_UdpSend->clear();
-}
-
-/******************************************************************************
- ******************************************************************************/
-
-/******************************************************************************
- ******************************************************************************/
 
 /***********************************
  *
@@ -367,7 +266,6 @@ void MainWindow::initUI()
 {
     QString rule = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     ui->lineEdit_TcpClientTargetIP->setValidator(new QRegExpValidator(QRegExp("^" + rule + "\\." + rule + "\\." + rule + "\\." + rule + "$"), this));
-    ui->lineEdit_UdpTargetIP->setValidator(new QRegExpValidator(QRegExp("^" + rule + "\\." + rule + "\\." + rule + "\\." + rule + "$"), this));
     ui->lineEdit_TcpClientTargetPort->setValidator(new QIntValidator(0, 65535, this));
     ui->lineEdit_UdpListenPort->setValidator(new QIntValidator(0, 65535, this));
 
@@ -385,18 +283,6 @@ void MainWindow::initUI()
 
     tableFormatAlt.setBorder(0);
     tableFormatAlt.setBackground(QColor("#E1F5FE"));
-
-    ui->label_AppVersion->setText(APPVERSION);
-
-    ui->label_GitHub->setText("<a href=\"https://github.com/rookiepeng/Socket-Test-QT/\">Source codes on GitHub</a>");
-    ui->label_GitHub->setTextFormat(Qt::RichText);
-    ui->label_GitHub->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    ui->label_GitHub->setOpenExternalLinks(true);
-
-    ui->label_HomePage->setText("<a href=\"https://zpeng.me/\">My home page</a>");
-    ui->label_HomePage->setTextFormat(Qt::RichText);
-    ui->label_HomePage->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    ui->label_HomePage->setOpenExternalLinks(true);
 }
 
 /***********************************
@@ -474,10 +360,6 @@ void MainWindow::loadSettings()
     ui->lineEdit_TcpClientTargetPort->setText(settings.value("TCP_CLIENT_TARGET_PORT", 1234).toString());
 
     ui->lineEdit_UdpListenPort->setText(settings.value("UDP_LISTEN_PORT", 1234).toString());
-    ui->lineEdit_UdpTargetIP->setText(settings.value("UDP_TARGET_IP", "127.0.0.1").toString());
-    ui->lineEdit_UdpTargetPort->setText(settings.value("UDP_TARGET_PORT", 1234).toString());
-
-    ui->tabWidget->setCurrentIndex(settings.value("TAB_INDEX", 0).toInt());
 
     int index = settings.value("interfaceIndex", 0).toInt();
     if (ui->comboBox_Interface->count() >= index)
@@ -516,12 +398,9 @@ void MainWindow::saveSettings()
     settings.setValue("TCP_CLIENT_TARGET_PORT", ui->lineEdit_TcpClientTargetPort->text());
 
     settings.setValue("UDP_LISTEN_PORT", ui->lineEdit_UdpListenPort->text());
-    settings.setValue("UDP_TARGET_IP", ui->lineEdit_UdpTargetIP->text());
-    settings.setValue("UDP_TARGET_PORT", ui->lineEdit_UdpTargetPort->text());
 
     settings.setValue("INTERFACE_INDEX", ui->comboBox_Interface->currentIndex());
 
-    settings.setValue("TAB_INDEX", ui->tabWidget->currentIndex());
     settings.sync();
 }
 

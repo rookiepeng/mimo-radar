@@ -90,12 +90,34 @@ void MyTCPClient::abortConnection()
 void MyTCPClient::messageReady()
 {
     //array = tcpSocket->readAll();
-    array.append(tcpSocket->readAll());
-    if(QString::compare("END", array.right(3), Qt::CaseInsensitive))
-    {
+    QString tempString = tcpSocket->readAll();
+    //emit newMessage(tcpSocket->peerAddress().toString(), tempString);
 
+    if(tempString.left(7)=="ADCDATA")
+    {
+        acceptingADCData=true;
+        array.clear();
+        //array=tempString;
     }
-    emit newMessage(tcpSocket->peerAddress().toString(), array);
+
+    if(acceptingADCData)
+    {
+        array.append(tempString);
+        //qDebug()<<array.toHex();
+    }
+    else
+    {
+        emit newMessage(tcpSocket->peerAddress().toString(), tempString);
+    }
+
+    if(array.right(7)=="ADCSTOP")
+    {
+        //array.append(tempString);
+        acceptingADCData=false;
+        emit newMessage(tcpSocket->peerAddress().toString(), array.toHex());
+        //qDebug()<<array;
+        //array.clear();
+    }
 }
 
 void MyTCPClient::sendMessage(QString string)

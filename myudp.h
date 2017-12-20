@@ -40,6 +40,8 @@ public slots:
 
 private:
     QUdpSocket *socket;
+    QByteArray array;
+    bool acceptingADCData=false;
 };
 
 #endif // MYUDP_H
