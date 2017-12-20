@@ -25,6 +25,7 @@
 #include <QScrollBar>
 #include <QSettings>
 #include <QNetworkInterface>
+#include <QMessageBox>
 #include <QtCharts/QChartView>
 #include <QtCharts/QSplineSeries>
 
@@ -113,6 +114,8 @@ private:
     QString settingsFileDir;
     QList<QNetworkInterface> interfaceList;
     quint8 type;
+
+    QMessageBox msgBox;
 
     QMainWindow waveform;
     QChartView *chartView;

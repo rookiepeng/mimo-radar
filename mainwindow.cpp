@@ -72,9 +72,15 @@ void MainWindow::onConnectButtonClicked()
     }
     else
     {
-        //ui->statusBar->showMessage(messageUDP + "Failed to listen to: " + localAddr.toString() + ": " + QString::number(udpListenPort), 2000);
         connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onConnectButtonClicked()));
         ui->statusBar->showMessage("Disconnected", 0);
+
+        msgBox.setText("UDP ERROR: Failed to listen to the UDP port.");
+        //msgBox.setInformativeText("UDP ERROR: Failed to listen to the UDP port.");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
     }
 
     saveSettings();
@@ -158,6 +164,12 @@ void MainWindow::onTcpClientTimeOut()
 
     mytcpclient->closeClient();
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onConnectButtonClicked()));
+
+    msgBox.setText("TCP ERROR: Connection time out.");
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.exec();
 }
 
 /***********************************
