@@ -48,32 +48,32 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 private slots:
+    /******************************************************************************
+     *
+     * Network Interface
+     *
+     ******************************************************************************/
+    void onRefreshButtonClicked();
 
     /******************************************************************************
      *
-     * TCP Client
+     * TCP Client and UDP Server
      *
      ******************************************************************************/
-    void onTcpClientButtonClicked();
+    void onConnectButtonClicked();
     void onTcpClientNewConnection(const QString &from, quint16 port);
-    void onTcpClientStopButtonClicked();
+    void onStopButtonClicked();
     void onTcpClientTimeOut();
-    void onTcpClientDisconnectButtonClicked();
-    void onTcpClientDisconnected();
+    void onDisconnectButtonClicked();
+    void onDisconnected();
     void onTcpClientSendMessage();
     void onAppendMessage(const QString &from, const QString &message);
 
     /******************************************************************************
      *
-     * UDP
+     * Waveform
      *
      ******************************************************************************/
-    //void onUdpButtonClicked();
-    //void onUdpStopButtonClicked();
-    //void onUdpAppendMessage(const QString &from, const QString &message);
-
-    void onRefreshButtonClicked();
-
     void openWaveform();
     void updateWavform();
 
@@ -113,9 +113,6 @@ private:
     QString settingsFileDir;
     QList<QNetworkInterface> interfaceList;
     quint8 type;
-
-    QString messageUDP="[UDP] ";
-    QString messageTCP="[TCP] ";
 
     QMainWindow waveform;
     QChartView *chartView;
