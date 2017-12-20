@@ -314,6 +314,20 @@
           </layout>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="openWaveform">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="updateWaveform">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_udp">

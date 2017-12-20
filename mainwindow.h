@@ -75,6 +75,9 @@ private slots:
 
     void onRefreshButtonClicked();
 
+    void openWaveform();
+    void updateWavform();
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -116,6 +119,7 @@ private:
     QString messageTCP="[TCP] ";
 
     QMainWindow waveform;
+    QChartView *chartView;
 };
 
 #endif // MAINWINDOW_H

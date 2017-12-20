@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onTcpClientButtonClicked()));
     connect(ui->button_Udp, SIGNAL(clicked()), this, SLOT(onUdpButtonClicked()));
     connect(ui->button_Refresh, SIGNAL(clicked()), this, SLOT(onRefreshButtonClicked()));
+
+    connect(ui->openWaveform, SIGNAL(clicked(bool)), this, SLOT(openWaveform()));
 }
 
 /******************************************************************************
@@ -528,8 +530,32 @@ void MainWindow::onRefreshButtonClicked()
     saveSettings();
     findLocalIPs();
     loadSettings();
+}
 
-    /*
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QSettings settings("ZPeng", "MIMORadar");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    QMainWindow::closeEvent(event);
+
+    waveform.close();
+}
+
+void MainWindow::restoreWindowState()
+{
+    QSettings settings("ZPeng", "MIMORadar");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::openWaveform()
+{
     //![1]
     QSplineSeries *series = new QSplineSeries();
     series->setName("spline");
@@ -562,27 +588,10 @@ void MainWindow::onRefreshButtonClicked()
     waveform.setCentralWidget(chartView);
     waveform.resize(400, 300);
     waveform.show();
-    //![5]*/
+    //![5]
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::updateWavform()
 {
-    QSettings settings("ZPeng", "MIMORadar");
-    settings.setValue("geometry", saveGeometry());
-    settings.setValue("windowState", saveState());
-    QMainWindow::closeEvent(event);
 
-    waveform.close();
-}
-
-void MainWindow::restoreWindowState()
-{
-    QSettings settings("ZPeng", "MIMORadar");
-    restoreGeometry(settings.value("geometry").toByteArray());
-    restoreState(settings.value("windowState").toByteArray());
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
