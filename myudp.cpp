@@ -48,6 +48,11 @@ void MyUDP::sendMessage(QHostAddress sender, quint16 senderPort, QString string)
 void MyUDP::readyRead()
 {
     // when data comes in
+    QByteArray ADCSeg3;
+    QByteArray ADCSeg2;
+    QByteArray ADCSeg1;
+    QByteArray ADCSeg0;
+
     QByteArray buffer;
     buffer.resize(socket->pendingDatagramSize());
 
@@ -81,8 +86,12 @@ void MyUDP::readyRead()
     {
         //array.append(buffer);
         acceptingADCData=false;
-        qDebug()<<array.size();
+        //qDebug()<<array.size();
+        qDebug()<<(qint32) array.at(0);
         array=array.mid(7,array.size()-14);
+
+
+        //qDebug()<<(qint32) array.at(0);
         emit newMessage(sender.toString(), array.toHex());
         qDebug()<<array.size();
         //qDebug()<<array.right(7);
