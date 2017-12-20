@@ -31,7 +31,6 @@
 
 #include "myudp.h"
 #include "mytcpclient.h"
-#include "waveform.h"
 
 #define TCPCLIENT 20
 #define UDPSERVER 30
