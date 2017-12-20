@@ -25,14 +25,18 @@
 #include <QScrollBar>
 #include <QSettings>
 #include <QNetworkInterface>
+#include <QtCharts/QChartView>
+#include <QtCharts/QSplineSeries>
 
 #include "myudp.h"
 #include "mytcpclient.h"
+#include "waveform.h"
 
-#define TCPSERVER 10
 #define TCPCLIENT 20
 #define UDPSERVER 30
 #define APPVERSION "V1.2"
+
+QT_CHARTS_USE_NAMESPACE
 
 namespace Ui
 {
@@ -88,7 +92,7 @@ private:
 
     void restoreWindowState();
 
-    QTextTableFormat tableFormat;
+    QTextTableFormat tableFormatPri, tableFormatAlt;
 
     MyUDP *myudp = nullptr;
     MyTCPClient *mytcpclient = nullptr;
@@ -110,6 +114,8 @@ private:
 
     QString messageUDP="[UDP] ";
     QString messageTCP="[TCP] ";
+
+    QMainWindow waveform;
 };
 
 #endif // MAINWINDOW_H

@@ -212,7 +212,7 @@ void MainWindow::onTcpClientAppendMessage(const QString &from, const QString &me
     }
     else
     {
-        QTextTable *table = cursor.insertTable(1, 2, tableFormat);
+        QTextTable *table = cursor.insertTable(1, 2, tableFormatPri);
         table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
         table->cellAt(0, 1).firstCursorPosition().insertText(message);
     }
@@ -321,7 +321,7 @@ void MainWindow::onUdpAppendMessage(const QString &from, const QString &message)
     }
     else
     {
-        QTextTable *table = cursor.insertTable(1, 2, tableFormat);
+        QTextTable *table = cursor.insertTable(1, 2, tableFormatPri);
         table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
         table->cellAt(0, 1).firstCursorPosition().insertText(message);
     }
@@ -378,7 +378,11 @@ void MainWindow::initUI()
     ui->lineEdit_TcpClientSend->setDisabled(true);
     ui->textBrowser_TcpClientMessage->setDisabled(true);
 
-    tableFormat.setBorder(0);
+    tableFormatPri.setBorder(0);
+    tableFormatPri.setBackground(QColor("#FCE4EC"));
+
+    tableFormatAlt.setBorder(0);
+    tableFormatAlt.setBackground(QColor("#E1F5FE"));
 
     ui->label_AppVersion->setText(APPVERSION);
 
@@ -524,6 +528,41 @@ void MainWindow::onRefreshButtonClicked()
     saveSettings();
     findLocalIPs();
     loadSettings();
+
+    /*
+    //![1]
+    QSplineSeries *series = new QSplineSeries();
+    series->setName("spline");
+    //![1]
+
+    //![2]
+    series->append(0, 6);
+    series->append(2, 4);
+    series->append(3, 8);
+    series->append(7, 4);
+    series->append(10, 5);
+    *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+    //![2]
+
+    //![3]
+    QChart *chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->setTitle("Simple spline chart example");
+    chart->createDefaultAxes();
+    chart->axisY()->setRange(0, 10);
+    //![3]
+
+    //![4]
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    //![4]
+
+    //![5]
+    waveform.setCentralWidget(chartView);
+    waveform.resize(400, 300);
+    waveform.show();
+    //![5]*/
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -532,6 +571,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
     QMainWindow::closeEvent(event);
+
+    waveform.close();
 }
 
 void MainWindow::restoreWindowState()

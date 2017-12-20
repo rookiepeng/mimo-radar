@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += network
+QT       += charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,10 +28,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     myudp.cpp \
-    mytcpclient.cpp
+    mytcpclient.cpp \
+    waveform.cpp
 
 HEADERS  += mainwindow.h \
     myudp.h \
-    mytcpclient.h
+    mytcpclient.h \
+    waveform.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    waveform.ui
