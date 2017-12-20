@@ -1,1 +1,3 @@
-MIMO-Radar-QT
+# MIMO Radar
+
+MIMO radar program on PC.
