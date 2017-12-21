@@ -41,6 +41,8 @@ public slots:
 private:
     QUdpSocket *socket;
     QByteArray array;
+    QVector<qint32> timeStamp;
+    QVector<qint32> adcData;
     bool acceptingADCData=false;
 };
 

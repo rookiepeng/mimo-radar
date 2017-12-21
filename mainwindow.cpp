@@ -76,7 +76,6 @@ void MainWindow::onConnectButtonClicked()
         ui->statusBar->showMessage("Disconnected", 0);
 
         msgBox.setText("UDP ERROR: Failed to listen to the UDP port.");
-        //msgBox.setInformativeText("UDP ERROR: Failed to listen to the UDP port.");
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
@@ -149,7 +148,6 @@ void MainWindow::onStopButtonClicked()
  ***********************************/
 void MainWindow::onTcpClientTimeOut()
 {
-    //ui->statusBar->showMessage(messageTCP + "Connection time out", 2000);
     disconnect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onStopButtonClicked()));
     disconnect(mytcpclient, SIGNAL(myClientConnected(QString, quint16)), this, SLOT(onTcpClientNewConnection(QString, quint16)));
     disconnect(mytcpclient, SIGNAL(connectionFailed()), this, SLOT(onTcpClientTimeOut()));
