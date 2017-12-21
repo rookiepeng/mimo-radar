@@ -125,7 +125,7 @@ void MyTCPClient::messageReady()
         emit newMessage(tcpSocket->peerAddress().toString(), array.toHex());
         //qDebug()<<array;
         //array.clear();
-        qDebug()<<timeStamp;
+        qDebug() << timeStamp;
         qDebug() << array.size();
         qDebug() << adcData;
 

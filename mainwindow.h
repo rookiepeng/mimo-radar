@@ -45,79 +45,79 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  private slots:
-    /******************************************************************************
+private slots:
+  /******************************************************************************
      *
      * Network Interface
      *
      ******************************************************************************/
-    void onRefreshButtonClicked();
+  void onRefreshButtonClicked();
 
-    /******************************************************************************
+  /******************************************************************************
      *
      * TCP Client and UDP Server
      *
      ******************************************************************************/
-    void onConnectButtonClicked();
-    void onTcpClientNewConnection(const QString &from, quint16 port);
-    void onStopButtonClicked();
-    void onTcpClientTimeOut();
-    void onDisconnectButtonClicked();
-    void onDisconnected();
-    void onTcpClientSendMessage();
-    void onAppendMessage(const QString &from, const QString &message);
+  void onConnectButtonClicked();
+  void onTcpClientNewConnection(const QString &from, quint16 port);
+  void onStopButtonClicked();
+  void onTcpClientTimeOut();
+  void onDisconnectButtonClicked();
+  void onDisconnected();
+  void onTcpClientSendMessage();
+  void onAppendMessage(const QString &from, const QString &message);
 
-    /******************************************************************************
+  /******************************************************************************
      *
      * Waveform
      *
      ******************************************************************************/
-    void openWaveform();
-    void updateWavform();
+  void openWaveform();
+  void updateWavform();
 
-  public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+public:
+  explicit MainWindow(QWidget *parent = 0);
+  ~MainWindow();
 
-  protected:
-    void closeEvent(QCloseEvent *event);
+protected:
+  void closeEvent(QCloseEvent *event);
 
-  private:
-    Ui::MainWindow *ui;
-    void initUI();
-    void loadSettings();
-    void saveSettings();
-    void findLocalIPs();
-    bool setupConnection(quint8 type);
+private:
+  Ui::MainWindow *ui;
+  void initUI();
+  void loadSettings();
+  void saveSettings();
+  void findLocalIPs();
+  bool setupConnection(quint8 type);
 
-    void restoreWindowState();
+  void restoreWindowState();
 
-    QTextTableFormat tableFormatPri, tableFormatAlt;
+  QTextTableFormat tableFormatPri, tableFormatAlt;
 
-    MyUDP *myudp = nullptr;
-    MyTCPClient *mytcpclient = nullptr;
+  MyUDP *myudp = nullptr;
+  MyTCPClient *mytcpclient = nullptr;
 
-    QHostAddress tcpClientTargetAddr;
-    quint16 tcpClientTargetPort;
+  QHostAddress tcpClientTargetAddr;
+  quint16 tcpClientTargetPort;
 
-    QHostAddress localAddr;
+  QHostAddress localAddr;
 
-    quint16 tcpServerListenPort;
+  quint16 tcpServerListenPort;
 
-    quint16 udpListenPort;
-    QHostAddress udpTargetAddr;
-    quint16 udpTargetPort;
+  quint16 udpListenPort;
+  QHostAddress udpTargetAddr;
+  quint16 udpTargetPort;
 
-    QString settingsFileDir;
-    QList<QNetworkInterface> interfaceList;
-    quint8 type;
+  QString settingsFileDir;
+  QList<QNetworkInterface> interfaceList;
+  quint8 type;
 
-    QMessageBox msgBox;
+  QMessageBox msgBox;
 
-    QMainWindow waveform;
-    QChartView *chartView;
+  QMainWindow waveform;
+  QChartView *chartView;
 };
 
 #endif // MAINWINDOW_H

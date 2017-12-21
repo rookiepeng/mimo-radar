@@ -24,26 +24,26 @@
 
 class MyUDP : public QUdpSocket
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    explicit MyUDP(QObject *parent = nullptr);
-    bool bindPort(QHostAddress addr, qint16 port);
-    void unbindPort();
+public:
+  explicit MyUDP(QObject *parent = nullptr);
+  bool bindPort(QHostAddress addr, qint16 port);
+  void unbindPort();
 
-  signals:
-    void newMessage(const QString &from, const QString &message);
+signals:
+  void newMessage(const QString &from, const QString &message);
 
-  public slots:
-    void readyRead();
-    void sendMessage(QHostAddress sender, quint16 senderPort, QString string);
+public slots:
+  void readyRead();
+  void sendMessage(QHostAddress sender, quint16 senderPort, QString string);
 
-  private:
-    QUdpSocket *socket;
-    QByteArray array;
-    QVector<quint32> timeStamp;
-    QVector<double> adcData;
-    bool acceptingADCData = false;
+private:
+  QUdpSocket *socket;
+  QByteArray array;
+  QVector<quint32> timeStamp;
+  QVector<double> adcData;
+  bool acceptingADCData = false;
 };
 
 #endif // MYUDP_H
