@@ -26,24 +26,24 @@ class MyUDP : public QUdpSocket
 {
     Q_OBJECT
 
-public:
+  public:
     explicit MyUDP(QObject *parent = nullptr);
     bool bindPort(QHostAddress addr, qint16 port);
     void unbindPort();
 
-signals:
+  signals:
     void newMessage(const QString &from, const QString &message);
 
-public slots:
+  public slots:
     void readyRead();
     void sendMessage(QHostAddress sender, quint16 senderPort, QString string);
 
-private:
+  private:
     QUdpSocket *socket;
     QByteArray array;
-    QVector<qint32> timeStamp;
-    QVector<qint32> adcData;
-    bool acceptingADCData=false;
+    QVector<quint32> timeStamp;
+    QVector<double> adcData;
+    bool acceptingADCData = false;
 };
 
 #endif // MYUDP_H

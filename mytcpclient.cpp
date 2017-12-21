@@ -93,14 +93,14 @@ void MyTCPClient::messageReady()
     QString tempString = tcpSocket->readAll();
     //emit newMessage(tcpSocket->peerAddress().toString(), tempString);
 
-    if(tempString.left(7)=="ADCDATA")
+    if (tempString.left(7) == "ADCDATA")
     {
-        acceptingADCData=true;
+        acceptingADCData = true;
         array.clear();
         //array=tempString;
     }
 
-    if(acceptingADCData)
+    if (acceptingADCData)
     {
         array.append(tempString);
         //qDebug()<<array.toHex();
@@ -110,13 +110,28 @@ void MyTCPClient::messageReady()
         emit newMessage(tcpSocket->peerAddress().toString(), tempString);
     }
 
-    if(array.right(7)=="ADCSTOP")
+    if (array.right(7) == "ADCSTOP")
     {
         //array.append(tempString);
-        acceptingADCData=false;
+        acceptingADCData = false;
+        array = array.mid(7, array.size() - 14);
+        for (qint16 i = 0; i < 1024; i++)
+        {
+            timeStamp.append(((((quint32)array.at(i)) << 16) + (((quint32)array.at(i + 1024)) << 8) + ((quint32)array.at(i + 2048))) >> 6);
+
+            adcData.append(((double)((((((quint32)array.at(i + 2048)) << 8) + ((quint32)array.at(i + 3072))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            //adcData.append(((((((quint32) array.at(i+2048))<<8) + ((quint32) array.at(i+3072)))>>2) << 20)>>20);
+        }
         emit newMessage(tcpSocket->peerAddress().toString(), array.toHex());
         //qDebug()<<array;
         //array.clear();
+        qDebug()<<timeStamp;
+        qDebug() << array.size();
+        qDebug() << adcData;
+
+        array.clear();
+        adcData.clear();
+        timeStamp.clear();
     }
 }
 

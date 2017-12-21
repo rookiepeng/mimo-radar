@@ -483,5 +483,4 @@ void MainWindow::openWaveform()
 
 void MainWindow::updateWavform()
 {
-
 }

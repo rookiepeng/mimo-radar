@@ -48,10 +48,10 @@ void MyUDP::sendMessage(QHostAddress sender, quint16 senderPort, QString string)
 void MyUDP::readyRead()
 {
     // when data comes in
-    QByteArray ADCSeg3;
-    QByteArray ADCSeg2;
-    QByteArray ADCSeg1;
-    QByteArray ADCSeg0;
+    //QByteArray ADCSeg3;
+    //QByteArray ADCSeg2;
+    //QByteArray ADCSeg1;
+    //QByteArray ADCSeg0;
 
     QByteArray buffer;
     buffer.resize(socket->pendingDatagramSize());
@@ -66,38 +66,44 @@ void MyUDP::readyRead()
     socket->readDatagram(buffer.data(), buffer.size(),
                          &sender, &senderPort);
 
-    if(buffer.left(7)=="ADCDATA")
+    if (buffer.left(7) == "ADCDATA")
     {
-        acceptingADCData=true;
+        acceptingADCData = true;
         array.clear();
     }
 
-    if(acceptingADCData)
+    if (acceptingADCData)
     {
         array.append(buffer);
         //qDebug()<<array.toHex();
     }
     else
     {
-        emit newMessage(sender.toString(), buffer.toHex());
+        emit newMessage(sender.toString(), buffer);
     }
 
-    if(array.right(7)=="ADCSTOP")
+    if (array.right(7) == "ADCSTOP")
     {
         //array.append(buffer);
-        acceptingADCData=false;
+        acceptingADCData = false;
         //qDebug()<<array.size();
-        qDebug()<<(qint32) array.at(0);
-        array=array.mid(7,array.size()-14);
+        qDebug() << (qint32)array.at(0);
+        array = array.mid(7, array.size() - 14);
 
-        for (qint16 i=0; i<1024; i++)
+        for (qint16 i = 0; i < 1024; i++)
         {
-            timeStamp.append(((((qint32) array.at(i))<<16) + (((qint32) array.at(i+1024))<<8) + ((qint32) array.at(i+2048)))>>6);
-            adcData.append((((((qint32) array.at(i+2048))<<8) + ((qint32) array.at(i+3072)))>>2) & 0x00000FFF);
+            //timeStamp.append(((((quint32)array.at(i)) << 16) + (((quint32)array.at(i + 1024)) << 8) + ((quint32)array.at(i + 2048))) >> 6);
+            adcData.append(((double)((((((quint32)array.at(i)) << 8) + ((quint32)array.at(i + 1024))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            //adcData.append(((((((quint32) array.at(i+2048))<<8) + ((quint32) array.at(i+3072)))>>2) << 20)>>20);
         }
         emit newMessage(sender.toString(), array.toHex());
-        qDebug()<<array.size();
-        qDebug()<<adcData;
+        //qDebug()<<timeStamp;
+        qDebug() << array.size();
+        qDebug() << adcData;
+
+        array.clear();
+        adcData.clear();
+        //timeStamp.clear();
         //qDebug()<<array.right(7);
     }
 }

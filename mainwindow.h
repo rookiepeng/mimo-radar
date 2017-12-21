@@ -47,7 +47,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-private slots:
+  private slots:
     /******************************************************************************
      *
      * Network Interface
@@ -77,14 +77,14 @@ private slots:
     void openWaveform();
     void updateWavform();
 
-public:
+  public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-protected:
+  protected:
     void closeEvent(QCloseEvent *event);
 
-private:
+  private:
     Ui::MainWindow *ui;
     void initUI();
     void loadSettings();

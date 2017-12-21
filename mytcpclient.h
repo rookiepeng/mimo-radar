@@ -26,7 +26,7 @@
 class MyTCPClient : public QTcpSocket
 {
     Q_OBJECT
-public:
+  public:
     explicit MyTCPClient(QObject *parent = nullptr);
     void connectTo(QHostAddress addr, quint16 port);
     void sendMessage(QString string);
@@ -34,22 +34,24 @@ public:
     void closeClient();
     void abortConnection();
 
-signals:
+  signals:
     void newMessage(const QString &from, const QString &message);
     void myClientConnected(const QString &from, quint16 port);
     void myClientDisconnected();
     void connectionFailed();
 
-private slots:
+  private slots:
     void onConnected();
     void onDisconnected();
     void messageReady();
     void onStateChanged(QAbstractSocket::SocketState state);
 
-private:
+  private:
     QTcpSocket *tcpSocket;
     QByteArray array;
-    bool acceptingADCData=false;
+    QVector<quint32> timeStamp;
+    QVector<double> adcData;
+    bool acceptingADCData = false;
 };
 
 #endif // MYTCPCLIENT_H
