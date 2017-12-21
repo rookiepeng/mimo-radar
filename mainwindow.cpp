@@ -475,7 +475,8 @@ void MainWindow::openWaveform()
 
     //![5]
     waveform.setCentralWidget(chartView);
-    waveform.resize(400, 300);
+    waveform.resize(600, 500);
+    waveform.setWindowTitle("Waveform - MIMO Radar");
     waveform.show();
     //![5]
 }

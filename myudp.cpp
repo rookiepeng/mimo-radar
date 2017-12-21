@@ -93,9 +93,8 @@ void MyUDP::readyRead()
         for (qint16 i=0; i<1024; i++)
         {
             timeStamp.append(((((qint32) array.at(i))<<16) + (((qint32) array.at(i+1024))<<8) + ((qint32) array.at(i+2048)))>>6);
-            adcData.append((((((qint32) array.at(i+2048))<<8) + ((qint32) array.at(i+3072)))>>2) & 0x00000FFF );
+            adcData.append((((((qint32) array.at(i+2048))<<8) + ((qint32) array.at(i+3072)))>>2) & 0x00000FFF);
         }
-        //qDebug()<<(qint32) array.at(0);
         emit newMessage(sender.toString(), array.toHex());
         qDebug()<<array.size();
         qDebug()<<adcData;
