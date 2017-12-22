@@ -48,11 +48,6 @@ void MyUDP::sendMessage(QHostAddress sender, quint16 senderPort, QString string)
 void MyUDP::readyRead()
 {
     // when data comes in
-    //QByteArray ADCSeg3;
-    //QByteArray ADCSeg2;
-    //QByteArray ADCSeg1;
-    //QByteArray ADCSeg0;
-
     QByteArray buffer;
     buffer.resize(socket->pendingDatagramSize());
 
@@ -62,7 +57,6 @@ void MyUDP::readyRead()
     // Receives a datagram no larger than maxSize bytes and stores it in data.
     // The sender's host address and port is stored in *address and *port
     // (unless the pointers are 0).
-
     socket->readDatagram(buffer.data(), buffer.size(),
                          &sender, &senderPort);
 
@@ -75,7 +69,6 @@ void MyUDP::readyRead()
     if (acceptingADCData)
     {
         array.append(buffer);
-        //qDebug()<<array.toHex();
     }
     else
     {
@@ -85,18 +78,22 @@ void MyUDP::readyRead()
     if (array.right(7) == "ADCSTOP")
     {
         acceptingADCData = false;
-        //qDebug()<<array.size();
-        //qDebug() << (qint32)array.at(0);
         array = array.mid(7, array.size() - 14);
 
         for (qint16 i = 0; i < 1024; i++)
         {
             //timeStamp.append(((((quint32)array.at(i)) << 16) + (((quint32)array.at(i + 1024)) << 8) + ((quint32)array.at(i + 2048))) >> 6);
+            // Ping
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 0)) << 8) + ((quint16)array.at(i + 1024 * 1))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 2)) << 8) + ((quint16)array.at(i + 1024 * 3))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 4)) << 8) + ((quint16)array.at(i + 1024 * 5))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 6)) << 8) + ((quint16)array.at(i + 1024 * 7))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
 
-            adcData.append(((float)((((((quint16)array.at(i)) << 8) + ((quint16)array.at(i + 1024))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i + 2048)) << 8) + ((quint16)array.at(i + 3072))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i + 4096)) << 8) + ((quint16)array.at(i + 5120))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i + 6144)) << 8) + ((quint16)array.at(i + 7168))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            // Pong
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 8)) << 8) + ((quint16)array.at(i + 1024 * 9))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 10)) << 8) + ((quint16)array.at(i + 1024 * 11))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 12)) << 8) + ((quint16)array.at(i + 1024 * 13))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 14)) << 8) + ((quint16)array.at(i + 1024 * 15))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
         }
         emit newMessage(sender.toString(), array.toHex());
 
@@ -105,8 +102,6 @@ void MyUDP::readyRead()
 
         array.clear();
         adcData.clear();
-        //timeStamp.clear();
-        //qDebug()<<array.right(7);
     }
 }
 

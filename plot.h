@@ -1,5 +1,5 @@
-#ifndef WAVEFORM_H
-#define WAVEFORM_H
+#ifndef PLOT_H
+#define PLOT_H
 
 #include <QWidget>
 #include <QtCharts/QChartView>
@@ -9,26 +9,26 @@ QT_CHARTS_USE_NAMESPACE
 
 namespace Ui
 {
-class WaveForm;
+class Plot;
 }
 
-class WaveForm : public QWidget
+class Plot : public QWidget
 {
     Q_OBJECT
 
   public:
-    explicit WaveForm(QWidget *parent = 0);
-    ~WaveForm();
+    explicit Plot(QWidget *parent = 0);
+    ~Plot();
 
   public slots:
-    void updateWavform();
+    void updatePlot();
 
   private:
-    Ui::WaveForm *ui;
+    Ui::Plot *ui;
     QChartView *chartView;
 
     QSplineSeries *series;
     QChart *chart;
 };
 
-#endif // WAVEFORM_H
+#endif // PLOT_H

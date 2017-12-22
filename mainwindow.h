@@ -31,7 +31,7 @@
 
 #include "myudp.h"
 #include "mytcpclient.h"
-#include "waveform.h"
+#include "plot.h"
 
 #define TCPCLIENT 20
 #define UDPSERVER 30
@@ -75,8 +75,7 @@ private slots:
      * Waveform
      *
      ******************************************************************************/
-  void openWaveform();
-  void updateWavform();
+  void openPlot();
 
 public:
   explicit MainWindow(QWidget *parent = 0);
@@ -117,7 +116,7 @@ private:
 
   QMessageBox msgBox;
 
-  WaveForm waveform;
+  Plot plot;
 };
 
 #endif // MAINWINDOW_H

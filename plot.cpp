@@ -1,22 +1,18 @@
-#include "waveform.h"
-#include "ui_waveform.h"
+#include "plot.h"
+#include "ui_plot.h"
 
-WaveForm::WaveForm(QWidget *parent) : QWidget(parent),
-                                      ui(new Ui::WaveForm)
+Plot::Plot(QWidget *parent) : QWidget(parent),
+                                      ui(new Ui::Plot)
 {
     ui->setupUi(this);
 
     //![1]
     series = new QSplineSeries();
-    series->setName("spline");
+    series->setName("beatSignal");
     //![1]
 
     //![2]
-    series->append(0, 0.1);
-    series->append(2, 0.4);
-    series->append(3, 1);
-    series->append(7, 1.2);
-    series->append(10, 0.5);
+    //series->append(0, 0.1);
     //*series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
     //![2]
 
@@ -27,24 +23,30 @@ WaveForm::WaveForm(QWidget *parent) : QWidget(parent),
     chart->setTitle("Beat Signal");
     chart->createDefaultAxes();
     chart->axisY()->setRange(0, 1.5);
-    chart->axisX()->setRange(0, 30);
+    chart->axisY()->setTitleText("Voltage (V)");
+    chart->axisX()->setRange(0, 10);
+    chart->axisX()->setTitleText("Time (ms)");
     //![3]
 
     //![4]
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
+    //![4]
 
+    //![5]
     //ui->mainLayout->addWidget(chartView,0,0);
     ui->mainLayout->insertWidget(0, chartView); // (position, widget)
+    //![5]
 }
 
-WaveForm::~WaveForm()
+Plot::~Plot()
 {
     delete ui;
 }
 
-void WaveForm::updateWavform()
+void Plot::updatePlot()
 {
-    *series << QPointF(22, 8);
+    *series << QPointF(5, 0.5);
+    *series << QPointF(6, 0.5);
     //series->clear();
 }

@@ -29,12 +29,12 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     myudp.cpp \
     mytcpclient.cpp \
-    waveform.cpp
+    plot.cpp
 
 HEADERS  += mainwindow.h \
     myudp.h \
     mytcpclient.h \
-    waveform.h
+    plot.h
 
 FORMS    += mainwindow.ui \
-    waveform.ui
+    plot.ui

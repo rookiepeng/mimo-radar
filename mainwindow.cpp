@@ -41,8 +41,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->button_TcpClient, SIGNAL(clicked()), this, SLOT(onConnectButtonClicked()));
     connect(ui->button_Refresh, SIGNAL(clicked()), this, SLOT(onRefreshButtonClicked()));
 
-    connect(ui->openWaveform, SIGNAL(clicked(bool)), this, SLOT(openWaveform()));
-    connect(ui->updateWaveform, SIGNAL(clicked(bool)), &waveform, SLOT(updateWavform()));
+    connect(ui->button_Plot, SIGNAL(clicked(bool)), this, SLOT(openPlot()));
+    connect(ui->updateWaveform, SIGNAL(clicked(bool)), &plot, SLOT(updatePlot()));
 }
 
 /***********************************
@@ -429,7 +429,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("windowState", saveState());
     QMainWindow::closeEvent(event);
 
-    waveform.close();
+    plot.close();
 }
 
 void MainWindow::restoreWindowState()
@@ -444,13 +444,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openWaveform()
+void MainWindow::openPlot()
 {
-    waveform.show();
-}
-
-void MainWindow::updateWavform()
-{
-    //*series << QPointF(22, 8);
-    //series->clear();
+    plot.show();
 }

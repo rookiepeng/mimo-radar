@@ -344,9 +344,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="openWaveform">
+     <widget class="QPushButton" name="button_Plot">
       <property name="text">
-       <string>PushButton</string>
+       <string>Plot Data</string>
       </property>
      </widget>
     </item>
