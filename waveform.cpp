@@ -36,7 +36,7 @@ WaveForm::WaveForm(QWidget *parent) :
     chartView->setRenderHint(QPainter::Antialiasing);
 
     //ui->mainLayout->addWidget(chartView,0,0);
-    ui->mainLayout->insertWidget(1,chartView);
+    ui->mainLayout->insertWidget(0,chartView); // (position, widget)
 }
 
 WaveForm::~WaveForm()

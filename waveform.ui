@@ -11,24 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Waveform - MIMO Radar</string>
   </property>
-  <layout class="QVBoxLayout" name="mainLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <layout class="QVBoxLayout" name="mainLayout"/>
  </widget>
  <resources/>
  <connections/>
