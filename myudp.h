@@ -21,6 +21,7 @@
 #define MYUDP_H
 
 #include <QUdpSocket>
+#include <QPointF>
 
 class MyUDP : public QUdpSocket
 {
@@ -33,6 +34,8 @@ public:
 
 signals:
   void newMessage(const QString &from, const QString &message);
+  void newData(const QVector<float> &time, const QVector<float> &data);
+  void newData(const QList<QPointF> &plotData);
 
 public slots:
   void readyRead();
@@ -43,6 +46,9 @@ private:
   QByteArray array;
   //QVector<quint32> timeStamp;
   QVector<float> adcData;
+  QVector<float> timeStamp; // millisecond
+
+  QList<QPointF> plotData;
   bool acceptingADCData = false;
 };
 

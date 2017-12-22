@@ -42,7 +42,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->button_Refresh, SIGNAL(clicked()), this, SLOT(onRefreshButtonClicked()));
 
     connect(ui->button_Plot, SIGNAL(clicked(bool)), this, SLOT(openPlot()));
-    connect(ui->updateWaveform, SIGNAL(clicked(bool)), &plot, SLOT(updatePlot()));
+    //connect(ui->updateWaveform, SIGNAL(clicked(bool)), &plot, SLOT(updatePlot()));
+
+    //connect(myudp, SIGNAL(newData(QVector<float>,QVector<float>)), &plot, SLOT(updatePlot(QVector<float>, QVector<float>)));
+    connect(myudp, SIGNAL(newData(QList<QPointF>)), &plot, SLOT(updatePlot(QList<QPointF>)));
 }
 
 /***********************************

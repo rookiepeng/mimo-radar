@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QtCharts/QChartView>
-#include <QtCharts/QSplineSeries>
+#include <QtCharts/QLineSeries>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -21,13 +21,14 @@ class Plot : public QWidget
     ~Plot();
 
   public slots:
-    void updatePlot();
+    void updatePlot(const QVector<float> &time, const QVector<float> &data);
+    void updatePlot(const QList<QPointF> &plotData);
 
   private:
     Ui::Plot *ui;
     QChartView *chartView;
 
-    QSplineSeries *series;
+    QLineSeries *series;
     QChart *chart;
 };
 

@@ -7,7 +7,7 @@ Plot::Plot(QWidget *parent) : QWidget(parent),
     ui->setupUi(this);
 
     //![1]
-    series = new QSplineSeries();
+    series = new QLineSeries();
     series->setName("beatSignal");
     //![1]
 
@@ -24,7 +24,7 @@ Plot::Plot(QWidget *parent) : QWidget(parent),
     chart->createDefaultAxes();
     chart->axisY()->setRange(0, 1.5);
     chart->axisY()->setTitleText("Voltage (V)");
-    chart->axisX()->setRange(0, 10);
+    chart->axisX()->setRange(0, 40);
     chart->axisX()->setTitleText("Time (ms)");
     //![3]
 
@@ -44,9 +44,22 @@ Plot::~Plot()
     delete ui;
 }
 
-void Plot::updatePlot()
+void Plot::updatePlot(const QVector<float> &time, const QVector<float> &data)
 {
-    *series << QPointF(5, 0.5);
-    *series << QPointF(6, 0.5);
-    //series->clear();
+    //*series << QPointF(5, 0.5);
+    //*series << QPointF(6, 0.5);
+    series->clear();
+    //series->append(time,data);
+    for(quint16 i=0; i<data.size();i++)
+    {
+        series->append(time.at(i),data.at(i));
+    }
+}
+
+void Plot::updatePlot(const QList<QPointF> &plotData)
+{
+    //*series << QPointF(5, 0.5);
+    //*series << QPointF(6, 0.5);
+    series->clear();
+    series->append(plotData);
 }
