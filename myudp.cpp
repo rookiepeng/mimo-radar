@@ -94,9 +94,9 @@ void MyUDP::readyRead()
             //timeStamp.append(((((quint32)array.at(i)) << 16) + (((quint32)array.at(i + 1024)) << 8) + ((quint32)array.at(i + 2048))) >> 6);
 
             adcData.append(((float)((((((quint16)array.at(i)) << 8) + ((quint16)array.at(i + 1024))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i+2048)) << 8) + ((quint16)array.at(i + 3072))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i+4096)) << 8) + ((quint16)array.at(i + 5120))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
-            adcData.append(((float)((((((quint16)array.at(i+6144)) << 8) + ((quint16)array.at(i + 7168))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 2048)) << 8) + ((quint16)array.at(i + 3072))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 4096)) << 8) + ((quint16)array.at(i + 5120))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 6144)) << 8) + ((quint16)array.at(i + 7168))) >> 2) & 0x00000FFF)) / pow(2, 12) * 1.48);
         }
         emit newMessage(sender.toString(), array.toHex());
 

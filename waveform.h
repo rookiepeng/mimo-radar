@@ -7,7 +7,8 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-namespace Ui {
+namespace Ui
+{
 class WaveForm;
 }
 
@@ -15,14 +16,14 @@ class WaveForm : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     explicit WaveForm(QWidget *parent = 0);
     ~WaveForm();
 
-public slots:
+  public slots:
     void updateWavform();
 
-private:
+  private:
     Ui::WaveForm *ui;
     QChartView *chartView;
 

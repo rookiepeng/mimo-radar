@@ -1,9 +1,8 @@
 #include "waveform.h"
 #include "ui_waveform.h"
 
-WaveForm::WaveForm(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::WaveForm)
+WaveForm::WaveForm(QWidget *parent) : QWidget(parent),
+                                      ui(new Ui::WaveForm)
 {
     ui->setupUi(this);
 
@@ -36,7 +35,7 @@ WaveForm::WaveForm(QWidget *parent) :
     chartView->setRenderHint(QPainter::Antialiasing);
 
     //ui->mainLayout->addWidget(chartView,0,0);
-    ui->mainLayout->insertWidget(0,chartView); // (position, widget)
+    ui->mainLayout->insertWidget(0, chartView); // (position, widget)
 }
 
 WaveForm::~WaveForm()
