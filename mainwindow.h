@@ -28,6 +28,8 @@
 #include <QMessageBox>
 #include <QtCharts/QChartView>
 #include <QtCharts/QSplineSeries>
+#include <QFileDialog>
+#include <QDateTime>
 
 #include "myudp.h"
 #include "mytcpclient.h"
@@ -35,7 +37,7 @@
 
 #define TCPCLIENT 20
 #define UDPSERVER 30
-#define APPVERSION "V1.2"
+#define APPVERSION "V1.0"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -68,6 +70,7 @@ private slots:
   void onDisconnectButtonClicked();
   void onDisconnected();
   void onTcpClientSendMessage();
+
   void onAppendMessage(const QString &from, const QString &message);
   void onAppendMessage(const QString &from, const QVector<float> &data);
 
@@ -77,6 +80,8 @@ private slots:
      *
      ******************************************************************************/
   void openPlot();
+
+  void saveToDir();
 
 public:
   explicit MainWindow(QWidget *parent = 0);
@@ -95,7 +100,7 @@ private:
 
   void restoreWindowState();
 
-  QTextTableFormat tableFormatPri, tableFormatAlt;
+  QTextTableFormat tableFormatSend, tableFormatData, tableFormatReceive;
 
   MyUDP *myudp = nullptr;
   MyTCPClient *mytcpclient = nullptr;
@@ -118,6 +123,9 @@ private:
   QMessageBox msgBox;
 
   Plot plot;
+
+  QString fileDir;
+  QString txChannel="0",rxChannel="0";
 };
 
 #endif // MAINWINDOW_H

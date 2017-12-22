@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     //connect(myudp, SIGNAL(newData(QVector<float>,QVector<float>)), &plot, SLOT(updatePlot(QVector<float>, QVector<float>)));
     connect(myudp, SIGNAL(newData(QVector<QPointF>)), &plot, SLOT(updatePlot(QVector<QPointF>)));
     connect(myudp, SIGNAL(newData(QVector<QPointF>)), this, SLOT(openPlot()));
+
+    connect(ui->toolButton_SaveTo, SIGNAL(clicked(bool)), this, SLOT(saveToDir()));
 }
 
 /***********************************
@@ -244,9 +246,15 @@ void MainWindow::onAppendMessage(const QString &from, const QString &message)
         ui->textBrowser_TcpClientMessage->append(message);
         ui->textBrowser_TcpClientMessage->setTextColor(color);
     }
+    else if (from == "Me")
+    {
+        QTextTable *table = cursor.insertTable(1, 2, tableFormatSend);
+        table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
+        table->cellAt(0, 1).firstCursorPosition().insertText(message);
+    }
     else
     {
-        QTextTable *table = cursor.insertTable(1, 2, tableFormatPri);
+        QTextTable *table = cursor.insertTable(1, 2, tableFormatReceive);
         table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
         table->cellAt(0, 1).firstCursorPosition().insertText(message);
     }
@@ -282,6 +290,14 @@ void MainWindow::onAppendMessage(const QString &from, const QVector<float> &data
 
     //qDebug()<<QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
 
+    QString filename = fileDir + "/TX_" + txChannel + " RX_" + rxChannel + " " + QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
+    QFile fileout(filename);
+    if (fileout.open(QFile::ReadWrite | QFile::Text))
+    {
+        QTextStream out(&fileout);
+        out << dataString;
+        fileout.close();
+    }
 }
 
 /***********************************
@@ -301,6 +317,18 @@ void MainWindow::onTcpClientSendMessage()
 
     onAppendMessage("Me", text);
     ui->lineEdit_TcpClientSend->clear();
+
+    if ((QString::compare("TX", text.left(2), Qt::CaseInsensitive)) == 0)
+    {
+        bool ok;
+        //qDebug()<<text.mid(2, text.length()-2).toUInt(&ok,16);
+        txChannel = QString::number(text.mid(2, text.length() - 2).toUInt(&ok, 16), 16);
+    }
+    else if ((QString::compare("RX", text.left(2), Qt::CaseInsensitive)) == 0)
+    {
+        bool ok;
+        rxChannel = QString::number(text.mid(2, text.length() - 2).toUInt(&ok, 16), 16);
+    }
 }
 
 /***********************************
@@ -326,11 +354,17 @@ void MainWindow::initUI()
 
     ui->statusBar->showMessage("Disconnected", 0);
 
-    tableFormatPri.setBorder(0);
-    tableFormatPri.setBackground(QColor("#FCE4EC"));
+    tableFormatSend.setBorder(0);
 
-    tableFormatAlt.setBorder(0);
-    tableFormatAlt.setBackground(QColor("#E1F5FE"));
+    tableFormatReceive.setBorder(0);
+    tableFormatReceive.setBackground(QColor("#E0F7FA"));
+
+    tableFormatData.setBorder(0);
+    tableFormatData.setBackground(QColor("#FCE4EC"));
+
+    ui->tabWidget->setCurrentIndex(0);
+
+    ui->label_AppVersion->setText(APPVERSION);
 }
 
 /***********************************
@@ -409,6 +443,9 @@ void MainWindow::loadSettings()
 
     ui->lineEdit_UdpListenPort->setText(settings.value("UDP_LISTEN_PORT", 1234).toString());
 
+    ui->lineEdit_SaveTo->setText(settings.value("DATADIR", QDir::currentPath()).toString());
+    fileDir = ui->lineEdit_SaveTo->text();
+
     int index = settings.value("interfaceIndex", 0).toInt();
     if (ui->comboBox_Interface->count() >= index)
     {
@@ -449,6 +486,8 @@ void MainWindow::saveSettings()
 
     settings.setValue("INTERFACE_INDEX", ui->comboBox_Interface->currentIndex());
 
+    settings.setValue("DATADIR", ui->lineEdit_SaveTo->text());
+
     settings.sync();
 }
 
@@ -487,4 +526,19 @@ void MainWindow::openPlot()
     {
         plot.show();
     }
+}
+
+void MainWindow::saveToDir()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Save File"), QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (dir.isEmpty())
+    {
+    }
+    else
+    {
+        fileDir = dir;
+        ui->lineEdit_SaveTo->setText(fileDir);
+    }
+    //qDebug() << fileDir;
+    //qDebug() << QDir::currentPath();
 }
