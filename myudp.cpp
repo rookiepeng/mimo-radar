@@ -93,7 +93,9 @@ void MyUDP::readyRead()
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 2)) << 8) + ((quint16)array.at(i + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 4)) << 8) + ((quint16)array.at(i + 1024 * 5))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 6)) << 8) + ((quint16)array.at(i + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
+        }
+        for (qint32 i = 0; i < 1024; i++)
+        {
             // Pong
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 8)) << 8) + ((quint16)array.at(i + 1024 * 9))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 10)) << 8) + ((quint16)array.at(i + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
