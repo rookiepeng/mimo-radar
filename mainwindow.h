@@ -31,6 +31,7 @@
 
 #include "myudp.h"
 #include "mytcpclient.h"
+#include "waveform.h"
 
 #define TCPCLIENT 20
 #define UDPSERVER 30
@@ -116,8 +117,7 @@ private:
 
   QMessageBox msgBox;
 
-  QMainWindow waveform;
-  QChartView *chartView;
+  WaveForm waveform;
 };
 
 #endif // MAINWINDOW_H

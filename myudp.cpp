@@ -84,10 +84,9 @@ void MyUDP::readyRead()
 
     if (array.right(7) == "ADCSTOP")
     {
-        //array.append(buffer);
         acceptingADCData = false;
         //qDebug()<<array.size();
-        qDebug() << (qint32)array.at(0);
+        //qDebug() << (qint32)array.at(0);
         array = array.mid(7, array.size() - 14);
 
         for (qint16 i = 0; i < 1024; i++)

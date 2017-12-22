@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->button_Refresh, SIGNAL(clicked()), this, SLOT(onRefreshButtonClicked()));
 
     connect(ui->openWaveform, SIGNAL(clicked(bool)), this, SLOT(openWaveform()));
+    connect(ui->updateWaveform, SIGNAL(clicked(bool)), &waveform, SLOT(updateWavform()));
 }
 
 /***********************************
@@ -445,42 +446,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::openWaveform()
 {
-    //![1]
-    QSplineSeries *series = new QSplineSeries();
-    series->setName("spline");
-    //![1]
-
-    //![2]
-    series->append(0, 6);
-    series->append(2, 4);
-    series->append(3, 8);
-    series->append(7, 4);
-    series->append(10, 5);
-    *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
-    //![2]
-
-    //![3]
-    QChart *chart = new QChart();
-    chart->legend()->hide();
-    chart->addSeries(series);
-    chart->setTitle("Simple spline chart example");
-    chart->createDefaultAxes();
-    chart->axisY()->setRange(0, 10);
-    //![3]
-
-    //![4]
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    //![4]
-
-    //![5]
-    waveform.setCentralWidget(chartView);
-    waveform.resize(600, 500);
-    waveform.setWindowTitle("Waveform - MIMO Radar");
     waveform.show();
-    //![5]
 }
 
 void MainWindow::updateWavform()
 {
+    //*series << QPointF(22, 8);
+    //series->clear();
 }

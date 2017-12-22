@@ -28,10 +28,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     myudp.cpp \
-    mytcpclient.cpp
+    mytcpclient.cpp \
+    waveform.cpp
 
 HEADERS  += mainwindow.h \
     myudp.h \
-    mytcpclient.h
+    mytcpclient.h \
+    waveform.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    waveform.ui
