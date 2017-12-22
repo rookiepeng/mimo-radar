@@ -69,6 +69,7 @@ private slots:
   void onDisconnected();
   void onTcpClientSendMessage();
   void onAppendMessage(const QString &from, const QString &message);
+  void onAppendMessage(const QString &from, const QVector<float> &data);
 
   /******************************************************************************
      *

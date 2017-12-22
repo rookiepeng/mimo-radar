@@ -62,6 +62,7 @@ void MainWindow::onConnectButtonClicked()
     {
         ui->lineEdit_UdpListenPort->setDisabled(true);
         connect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+        connect(myudp, SIGNAL(newMessage(QString, QVector<float>)), this, SLOT(onAppendMessage(QString, QVector<float>)));
 
         if (setupConnection(TCPCLIENT))
         {
@@ -139,6 +140,7 @@ void MainWindow::onStopButtonClicked()
     ui->textBrowser_TcpClientMessage->setDisabled(true);
 
     disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    disconnect(myudp, SIGNAL(newMessage(QString, QVector<float>)), this, SLOT(onAppendMessage(QString, QVector<float>)));
     myudp->unbindPort();
     ui->lineEdit_UdpListenPort->setDisabled(false);
 
@@ -161,6 +163,7 @@ void MainWindow::onTcpClientTimeOut()
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
 
     disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    disconnect(myudp, SIGNAL(newMessage(QString, QVector<float>)), this, SLOT(onAppendMessage(QString, QVector<float>)));
     myudp->unbindPort();
     ui->lineEdit_UdpListenPort->setDisabled(false);
 
@@ -212,6 +215,7 @@ void MainWindow::onDisconnected()
 
     // UDP
     disconnect(myudp, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
+    disconnect(myudp, SIGNAL(newMessage(QString, QVector<float>)), this, SLOT(onAppendMessage(QString, QVector<float>)));
     myudp->unbindPort();
     ui->lineEdit_UdpListenPort->setDisabled(false);
 
@@ -248,6 +252,36 @@ void MainWindow::onAppendMessage(const QString &from, const QString &message)
     }
     QScrollBar *bar = ui->textBrowser_TcpClientMessage->verticalScrollBar();
     bar->setValue(bar->maximum());
+}
+
+void MainWindow::onAppendMessage(const QString &from, const QVector<float> &data)
+{
+    //if (from.isEmpty() || message.isEmpty())
+    //{
+    //    return;
+    //}
+
+    QTextCursor cursor(ui->textBrowser_TcpClientMessage->textCursor());
+    cursor.movePosition(QTextCursor::End);
+
+    QTextTable *table = cursor.insertTable(1, 2, tableFormatData);
+    table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
+
+    QString dataString;
+    qint16 i;
+    for (i = 0; i < data.size() - 1; i++)
+    {
+        dataString.append(QString::number(data.at(i)) + ", ");
+    }
+    dataString.append(QString::number(data.at(i)));
+
+    table->cellAt(0, 1).firstCursorPosition().insertText(dataString);
+
+    QScrollBar *bar = ui->textBrowser_TcpClientMessage->verticalScrollBar();
+    bar->setValue(bar->maximum());
+
+    //qDebug()<<QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
+
 }
 
 /***********************************

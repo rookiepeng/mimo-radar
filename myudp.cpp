@@ -100,23 +100,25 @@ void MyUDP::readyRead()
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 12)) << 8) + ((quint16)array.at(i + 1024 * 13))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 14)) << 8) + ((quint16)array.at(i + 1024 * 15))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
         }
-        emit newMessage(sender.toString(), array.toHex());
+        emit newMessage(sender.toString(), adcData);
+
+        // prepare data for plotting
         for (quint16 i = 0; i < 8192; i++)
         {
             plotData.append(QPointF(timeStamp.at(i), adcData.at(i)));
         }
         emit newData(plotData);
 
-        qDebug() << adcData.size();
-        qDebug() << adcData.mid(0, 1024);
-        qDebug() << timeStamp.mid(0, 1024);
+        //qDebug() << adcData.size();
+        //qDebug() << adcData.mid(0, 1024);
+        //qDebug() << timeStamp.mid(0, 1024);
         //qDebug() << adcData.mid(1024,1024);
         //qDebug() << adcData.mid(1024*2,1024);
         //qDebug() << adcData.mid(1024*3,1024);
         //qDebug() << adcData.mid(1024*4,1024);
         //qDebug() << adcData.mid(1024*5,1024);
         //qDebug() << adcData.mid(1024*6,1024);
-        //qDebug() << adcData.mid(1024*7,1024);
+        //qDebug() << adcData.mid(1024 * 7, 1024);
 
         array.clear();
         adcData.clear();

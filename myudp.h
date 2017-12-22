@@ -22,6 +22,7 @@
 
 #include <QUdpSocket>
 #include <QPointF>
+#include <QFile>
 
 class MyUDP : public QUdpSocket
 {
@@ -34,7 +35,7 @@ public:
 
 signals:
   void newMessage(const QString &from, const QString &message);
-  void newData(const QVector<float> &time, const QVector<float> &data);
+  void newMessage(const QString &from, const QVector<float> &data);
   void newData(const QVector<QPointF> &plotData);
 
 public slots:
