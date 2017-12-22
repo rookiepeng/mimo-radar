@@ -35,7 +35,7 @@ public:
 signals:
   void newMessage(const QString &from, const QString &message);
   void newData(const QVector<float> &time, const QVector<float> &data);
-  void newData(const QList<QPointF> &plotData);
+  void newData(const QVector<QPointF> &plotData);
 
 public slots:
   void readyRead();
@@ -48,7 +48,7 @@ private:
   QVector<float> adcData;
   QVector<float> timeStamp; // millisecond
 
-  QList<QPointF> plotData;
+  QVector<QPointF> plotData;
   bool acceptingADCData = false;
 };
 

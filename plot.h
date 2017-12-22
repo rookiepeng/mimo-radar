@@ -14,22 +14,23 @@ class Plot;
 
 class Plot : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    explicit Plot(QWidget *parent = 0);
-    ~Plot();
+public:
+  explicit Plot(QWidget *parent = 0);
+  ~Plot();
 
-  public slots:
-    void updatePlot(const QVector<float> &time, const QVector<float> &data);
-    void updatePlot(const QList<QPointF> &plotData);
+public slots:
+  void updatePlot(const QVector<float> &time, const QVector<float> &data);
+  void updatePlot(const QVector<QPointF> &plotData);
+  void clearPlot();
 
-  private:
-    Ui::Plot *ui;
-    QChartView *chartView;
+private:
+  Ui::Plot *ui;
+  QChartView *chartView;
 
-    QLineSeries *series;
-    QChart *chart;
+  QLineSeries *series;
+  QChart *chart;
 };
 
 #endif // PLOT_H

@@ -23,9 +23,9 @@ MyUDP::MyUDP(QObject *parent) : QUdpSocket(parent)
 {
     socket = new QUdpSocket();
 
-    for (quint16 i=0; i<8192;i++)
+    for (quint16 i = 0; i < 8192; i++)
     {
-        timeStamp.append(i/250.0);
+        timeStamp.append(i / 250.0);
     }
 }
 
@@ -101,18 +101,15 @@ void MyUDP::readyRead()
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 14)) << 8) + ((quint16)array.at(i + 1024 * 15))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
         }
         emit newMessage(sender.toString(), array.toHex());
-        for (quint16 i=0; i<8192;i++)
+        for (quint16 i = 0; i < 8192; i++)
         {
             plotData.append(QPointF(timeStamp.at(i), adcData.at(i)));
         }
-
-        //! TODO
-        //! QChart has a very poor performance, switch to QML
-        //emit newData(plotData);
+        emit newData(plotData);
 
         qDebug() << adcData.size();
-        qDebug() << adcData.mid(0,1024);
-        qDebug() << timeStamp.mid(0,1024);
+        qDebug() << adcData.mid(0, 1024);
+        qDebug() << timeStamp.mid(0, 1024);
         //qDebug() << adcData.mid(1024,1024);
         //qDebug() << adcData.mid(1024*2,1024);
         //qDebug() << adcData.mid(1024*3,1024);
@@ -123,6 +120,7 @@ void MyUDP::readyRead()
 
         array.clear();
         adcData.clear();
+        plotData.clear();
     }
 }
 

@@ -2,7 +2,7 @@
 #include "ui_plot.h"
 
 Plot::Plot(QWidget *parent) : QWidget(parent),
-                                      ui(new Ui::Plot)
+                              ui(new Ui::Plot)
 {
     ui->setupUi(this);
 
@@ -24,7 +24,7 @@ Plot::Plot(QWidget *parent) : QWidget(parent),
     chart->createDefaultAxes();
     chart->axisY()->setRange(0, 1.5);
     chart->axisY()->setTitleText("Voltage (V)");
-    chart->axisX()->setRange(0, 40);
+    chart->axisX()->setRange(0, 8192 / 250);
     chart->axisX()->setTitleText("Time (ms)");
     //![3]
 
@@ -50,16 +50,18 @@ void Plot::updatePlot(const QVector<float> &time, const QVector<float> &data)
     //*series << QPointF(6, 0.5);
     series->clear();
     //series->append(time,data);
-    for(quint16 i=0; i<data.size();i++)
+    for (quint16 i = 0; i < data.size(); i++)
     {
-        series->append(time.at(i),data.at(i));
+        series->append(time.at(i), data.at(i));
     }
 }
 
-void Plot::updatePlot(const QList<QPointF> &plotData)
+void Plot::updatePlot(const QVector<QPointF> &plotData)
 {
-    //*series << QPointF(5, 0.5);
-    //*series << QPointF(6, 0.5);
+    series->replace(plotData); // optimized for performance
+}
+
+void Plot::clearPlot()
+{
     series->clear();
-    series->append(plotData);
 }
