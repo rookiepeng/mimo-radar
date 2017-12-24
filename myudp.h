@@ -45,7 +45,7 @@ public slots:
 private:
   QUdpSocket *socket;
   QByteArray array;
-  //QVector<quint32> timeStamp;
+  QVector<quint32> timeStampMCU;
   QVector<float> adcData;
   QVector<float> timeStamp; // millisecond
 
