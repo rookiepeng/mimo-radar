@@ -531,13 +531,13 @@ void MainWindow::openPlot()
 void MainWindow::saveToDir()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Save File"), QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (dir.isEmpty())
-    {
-    }
-    else
+    if (!dir.isEmpty())
     {
         fileDir = dir;
         ui->lineEdit_SaveTo->setText(fileDir);
+    }
+    else
+    {
     }
     //qDebug() << fileDir;
     //qDebug() << QDir::currentPath();
