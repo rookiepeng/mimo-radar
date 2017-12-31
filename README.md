@@ -1,6 +1,6 @@
 # MIMO Radar
 
-MIMO radar program on PC.
+Firmware and PC client source code for the MIMO radar system.
 
 ## Hardware
 
