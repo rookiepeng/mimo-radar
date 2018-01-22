@@ -70,186 +70,34 @@ void MyUDP::readyRead()
         acceptingADCData = false;
         array = array.mid(7, array.size() - 14);
         qint32 i;
-        for (i = 0; i < 1024; i += 8)
+        for (i = 0; i < 1024; i ++)
         {
-            // ch3 1
-            timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 12)) << 16) + (((quint32)array.at(i + 1 + 1024 * 13)) << 8) + ((quint32)array.at(i + 1 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1 + 1024 * 10)) << 8) + ((quint16)array.at(i + 1 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 2
-            timeStampMCU.append(((((quint32)array.at(i + 2)) << 16) + (((quint32)array.at(i + 2 + 1024)) << 8) + ((quint32)array.at(i + 2 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 2 + 1024 * 2)) << 8) + ((quint16)array.at(i + 2 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 2
-            timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 4)) << 16) + (((quint32)array.at(i + 2 + 1024 * 5)) << 8) + ((quint32)array.at(i + 2 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 2 + 1024 * 6)) << 8) + ((quint16)array.at(i + 2 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 1
-            timeStampMCU.append(((((quint32)array.at(i + 1)) << 16) + (((quint32)array.at(i + 1 + 1024)) << 8) + ((quint32)array.at(i + 1 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1 + 1024 * 2)) << 8) + ((quint16)array.at(i + 1 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 1
-            timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 4)) << 16) + (((quint32)array.at(i + 1 + 1024 * 5)) << 8) + ((quint32)array.at(i + 1 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1 + 1024 * 6)) << 8) + ((quint16)array.at(i + 1 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 1
-            timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 8)) << 16) + (((quint32)array.at(i + 1 + 1024 * 9)) << 8) + ((quint32)array.at(i + 1 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1 + 1024 * 10)) << 8) + ((quint16)array.at(i + 1 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
-            // ch1 3
-            timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 4)) << 16) + (((quint32)array.at(i + 3 + 1024 * 5)) << 8) + ((quint32)array.at(i + 3 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 3 + 1024 * 6)) << 8) + ((quint16)array.at(i + 3 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 3
-            timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 8)) << 16) + (((quint32)array.at(i + 3 + 1024 * 9)) << 8) + ((quint32)array.at(i + 3 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 3 + 1024 * 10)) << 8) + ((quint16)array.at(i + 3 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 3
-            timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 12)) << 16) + (((quint32)array.at(i + 3 + 1024 * 13)) << 8) + ((quint32)array.at(i + 3 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 3 + 1024 * 10)) << 8) + ((quint16)array.at(i + 3 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 2
-            timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 8)) << 16) + (((quint32)array.at(i + 2 + 1024 * 9)) << 8) + ((quint32)array.at(i + 2 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 2 + 1024 * 10)) << 8) + ((quint16)array.at(i + 2 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 2
-            timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 12)) << 16) + (((quint32)array.at(i + 2 + 1024 * 13)) << 8) + ((quint32)array.at(i + 2 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 2 + 1024 * 10)) << 8) + ((quint16)array.at(i + 2 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 3
-            timeStampMCU.append(((((quint32)array.at(i + 3)) << 16) + (((quint32)array.at(i + 3 + 1024)) << 8) + ((quint32)array.at(i + 3 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 3 + 1024 * 2)) << 8) + ((quint16)array.at(i + 3 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
-            // ch0 5
-            timeStampMCU.append(((((quint32)array.at(i + 5)) << 16) + (((quint32)array.at(i + 5 + 1024)) << 8) + ((quint32)array.at(i + 5 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 5 + 1024 * 2)) << 8) + ((quint16)array.at(i + 5 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 5
-            timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 4)) << 16) + (((quint32)array.at(i + 5 + 1024 * 5)) << 8) + ((quint32)array.at(i + 5 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 5 + 1024 * 6)) << 8) + ((quint16)array.at(i + 5 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 5
-            timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 8)) << 16) + (((quint32)array.at(i + 5 + 1024 * 9)) << 8) + ((quint32)array.at(i + 5 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 5 + 1024 * 10)) << 8) + ((quint16)array.at(i + 5 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 4
-            timeStampMCU.append(((((quint32)array.at(i + 4)) << 16) + (((quint32)array.at(i + 4 + 1024)) << 8) + ((quint32)array.at(i + 4 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 4 + 1024 * 2)) << 8) + ((quint16)array.at(i + 4 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 4
-            timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 4)) << 16) + (((quint32)array.at(i + 4 + 1024 * 5)) << 8) + ((quint32)array.at(i + 4 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 4 + 1024 * 6)) << 8) + ((quint16)array.at(i + 4 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 4
-            timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 8)) << 16) + (((quint32)array.at(i + 4 + 1024 * 9)) << 8) + ((quint32)array.at(i + 4 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 4 + 1024 * 10)) << 8) + ((quint16)array.at(i + 4 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 4
-            timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 12)) << 16) + (((quint32)array.at(i + 4 + 1024 * 13)) << 8) + ((quint32)array.at(i + 4 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 4 + 1024 * 10)) << 8) + ((quint16)array.at(i + 4 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
-            // ch2 6
-            timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 8)) << 16) + (((quint32)array.at(i + 6 + 1024 * 9)) << 8) + ((quint32)array.at(i + 6 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 6 + 1024 * 10)) << 8) + ((quint16)array.at(i + 6 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 6
-            timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 12)) << 16) + (((quint32)array.at(i + 6 + 1024 * 13)) << 8) + ((quint32)array.at(i + 6 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 6 + 1024 * 10)) << 8) + ((quint16)array.at(i + 6 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 7
-            timeStampMCU.append(((((quint32)array.at(i + 7)) << 16) + (((quint32)array.at(i + 7 + 1024)) << 8) + ((quint32)array.at(i + 7 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 7 + 1024 * 2)) << 8) + ((quint16)array.at(i + 7 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 5
-            timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 12)) << 16) + (((quint32)array.at(i + 5 + 1024 * 13)) << 8) + ((quint32)array.at(i + 5 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 5 + 1024 * 10)) << 8) + ((quint16)array.at(i + 5 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch0 6
-            timeStampMCU.append(((((quint32)array.at(i + 6)) << 16) + (((quint32)array.at(i + 6 + 1024)) << 8) + ((quint32)array.at(i + 6 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 6 + 1024 * 2)) << 8) + ((quint16)array.at(i + 6 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 6
-            timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 4)) << 16) + (((quint32)array.at(i + 6 + 1024 * 5)) << 8) + ((quint32)array.at(i + 6 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 6 + 1024 * 6)) << 8) + ((quint16)array.at(i + 6 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
-            // ch0 8
-            timeStampMCU.append(((((quint32)array.at(i + 8)) << 16) + (((quint32)array.at(i + 8 + 1024)) << 8) + ((quint32)array.at(i + 8 + 1024 * 2))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 8 + 1024 * 2)) << 8) + ((quint16)array.at(i + 8 + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 8
-            timeStampMCU.append(((((quint32)array.at(i + 8 + 1024 * 4)) << 16) + (((quint32)array.at(i + 8 + 1024 * 5)) << 8) + ((quint32)array.at(i + 8 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 8 + 1024 * 6)) << 8) + ((quint16)array.at(i + 8 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 8
-            timeStampMCU.append(((((quint32)array.at(i + 8 + 1024 * 8)) << 16) + (((quint32)array.at(i + 8 + 1024 * 9)) << 8) + ((quint32)array.at(i + 8 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 8 + 1024 * 10)) << 8) + ((quint16)array.at(i + 8 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 8
-            timeStampMCU.append(((((quint32)array.at(i + 8 + 1024 * 12)) << 16) + (((quint32)array.at(i + 8 + 1024 * 13)) << 8) + ((quint32)array.at(i + 8 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 8 + 1024 * 10)) << 8) + ((quint16)array.at(i + 8 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch1 7
-            timeStampMCU.append(((((quint32)array.at(i + 7 + 1024 * 4)) << 16) + (((quint32)array.at(i + 7 + 1024 * 5)) << 8) + ((quint32)array.at(i + 7 + 1024 * 6))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 7 + 1024 * 6)) << 8) + ((quint16)array.at(i + 7 + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch2 7
-            timeStampMCU.append(((((quint32)array.at(i + 7 + 1024 * 8)) << 16) + (((quint32)array.at(i + 7 + 1024 * 9)) << 8) + ((quint32)array.at(i + 7 + 1024 * 10))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 7 + 1024 * 10)) << 8) + ((quint16)array.at(i + 7 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            // ch3 7
-            timeStampMCU.append(((((quint32)array.at(i + 7 + 1024 * 12)) << 16) + (((quint32)array.at(i + 7 + 1024 * 13)) << 8) + ((quint32)array.at(i + 7 + 1024 * 14))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 7 + 1024 * 10)) << 8) + ((quint16)array.at(i + 7 + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-
             // Ping
-            //adcData.append(((float)((((((quint16)array.at(i + 1024 * 2)) << 8) + ((quint16)array.at(i + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            //adcData.append(((float)((((((quint16)array.at(i + 1024 * 6)) << 8) + ((quint16)array.at(i + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            //adcData.append(((float)((((((quint16)array.at(i + 1024 * 10)) << 8) + ((quint16)array.at(i + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
-            //adcData.append(((float)((((((quint16)array.at(i + 1024 * 14)) << 8) + ((quint16)array.at(i + 1024 * 15))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 0)) << 8) + ((quint16)array.at(i + 1024 * 1))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 2)) << 8) + ((quint16)array.at(i + 1024 * 3))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 4)) << 8) + ((quint16)array.at(i + 1024 * 5))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 6)) << 8) + ((quint16)array.at(i + 1024 * 7))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            //timeStampMCU.append(((((quint32)array.at(i+1024 * 0)) << 16) + (((quint32)array.at(i + 1024*1)) << 8) + ((quint32)array.at(i + 1024*2))) >> 6);
+            //timeStampMCU.append(((((quint32)array.at(i+1024 * 4)) << 16) + (((quint32)array.at(i + 1024*5)) << 8) + ((quint32)array.at(i + 1024*6))) >> 6);
+            //timeStampMCU.append(((((quint32)array.at(i+1024 * 8)) << 16) + (((quint32)array.at(i + 1024*9)) << 8) + ((quint32)array.at(i + 1024*10))) >> 6);
+            //timeStampMCU.append(((((quint32)array.at(i+1024 * 12)) << 16) + (((quint32)array.at(i + 1024*13)) << 8) + ((quint32)array.at(i + 1024*14))) >> 6);
         }
-
-        // ch3 1
-        timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 12)) << 16) + (((quint32)array.at(i + 1 + 1024 * 13)) << 8) + ((quint32)array.at(i + 1 + 1024 * 14))) >> 6);
-        // ch0 2
-        timeStampMCU.append(((((quint32)array.at(i + 2)) << 16) + (((quint32)array.at(i + 2 + 1024)) << 8) + ((quint32)array.at(i + 2 + 1024 * 2))) >> 6);
-        // ch1 2
-        timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 4)) << 16) + (((quint32)array.at(i + 2 + 1024 * 5)) << 8) + ((quint32)array.at(i + 2 + 1024 * 6))) >> 6);
-        // ch0 1
-        timeStampMCU.append(((((quint32)array.at(i + 1)) << 16) + (((quint32)array.at(i + 1 + 1024)) << 8) + ((quint32)array.at(i + 1 + 1024 * 2))) >> 6);
-        // ch1 1
-        timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 4)) << 16) + (((quint32)array.at(i + 1 + 1024 * 5)) << 8) + ((quint32)array.at(i + 1 + 1024 * 6))) >> 6);
-        // ch2 1
-        timeStampMCU.append(((((quint32)array.at(i + 1 + 1024 * 8)) << 16) + (((quint32)array.at(i + 1 + 1024 * 9)) << 8) + ((quint32)array.at(i + 1 + 1024 * 10))) >> 6);
-
-        // ch1 3
-        timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 4)) << 16) + (((quint32)array.at(i + 3 + 1024 * 5)) << 8) + ((quint32)array.at(i + 3 + 1024 * 6))) >> 6);
-        // ch2 3
-        timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 8)) << 16) + (((quint32)array.at(i + 3 + 1024 * 9)) << 8) + ((quint32)array.at(i + 3 + 1024 * 10))) >> 6);
-        // ch3 3
-        timeStampMCU.append(((((quint32)array.at(i + 3 + 1024 * 12)) << 16) + (((quint32)array.at(i + 3 + 1024 * 13)) << 8) + ((quint32)array.at(i + 3 + 1024 * 14))) >> 6);
-        // ch2 2
-        timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 8)) << 16) + (((quint32)array.at(i + 2 + 1024 * 9)) << 8) + ((quint32)array.at(i + 2 + 1024 * 10))) >> 6);
-        // ch3 2
-        timeStampMCU.append(((((quint32)array.at(i + 2 + 1024 * 12)) << 16) + (((quint32)array.at(i + 2 + 1024 * 13)) << 8) + ((quint32)array.at(i + 2 + 1024 * 14))) >> 6);
-        // ch0 3
-        timeStampMCU.append(((((quint32)array.at(i + 3)) << 16) + (((quint32)array.at(i + 3 + 1024)) << 8) + ((quint32)array.at(i + 3 + 1024 * 2))) >> 6);
-
-        // ch0 5
-        timeStampMCU.append(((((quint32)array.at(i + 5)) << 16) + (((quint32)array.at(i + 5 + 1024)) << 8) + ((quint32)array.at(i + 5 + 1024 * 2))) >> 6);
-        // ch1 5
-        timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 4)) << 16) + (((quint32)array.at(i + 5 + 1024 * 5)) << 8) + ((quint32)array.at(i + 5 + 1024 * 6))) >> 6);
-        // ch2 5
-        timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 8)) << 16) + (((quint32)array.at(i + 5 + 1024 * 9)) << 8) + ((quint32)array.at(i + 5 + 1024 * 10))) >> 6);
-        // ch0 4
-        timeStampMCU.append(((((quint32)array.at(i + 4)) << 16) + (((quint32)array.at(i + 4 + 1024)) << 8) + ((quint32)array.at(i + 4 + 1024 * 2))) >> 6);
-        // ch1 4
-        timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 4)) << 16) + (((quint32)array.at(i + 4 + 1024 * 5)) << 8) + ((quint32)array.at(i + 4 + 1024 * 6))) >> 6);
-        // ch2 4
-        timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 8)) << 16) + (((quint32)array.at(i + 4 + 1024 * 9)) << 8) + ((quint32)array.at(i + 4 + 1024 * 10))) >> 6);
-        // ch3 4
-        timeStampMCU.append(((((quint32)array.at(i + 4 + 1024 * 12)) << 16) + (((quint32)array.at(i + 4 + 1024 * 13)) << 8) + ((quint32)array.at(i + 4 + 1024 * 14))) >> 6);
-
-        // ch2 6
-        timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 8)) << 16) + (((quint32)array.at(i + 6 + 1024 * 9)) << 8) + ((quint32)array.at(i + 6 + 1024 * 10))) >> 6);
-        // ch3 6
-        timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 12)) << 16) + (((quint32)array.at(i + 6 + 1024 * 13)) << 8) + ((quint32)array.at(i + 6 + 1024 * 14))) >> 6);
-        // ch0 7
-        timeStampMCU.append(((((quint32)array.at(i + 7)) << 16) + (((quint32)array.at(i + 7 + 1024)) << 8) + ((quint32)array.at(i + 7 + 1024 * 2))) >> 6);
-        // ch3 5
-        timeStampMCU.append(((((quint32)array.at(i + 5 + 1024 * 12)) << 16) + (((quint32)array.at(i + 5 + 1024 * 13)) << 8) + ((quint32)array.at(i + 5 + 1024 * 14))) >> 6);
-        // ch0 6
-        timeStampMCU.append(((((quint32)array.at(i + 6)) << 16) + (((quint32)array.at(i + 6 + 1024)) << 8) + ((quint32)array.at(i + 6 + 1024 * 2))) >> 6);
-        // ch1 6
-        timeStampMCU.append(((((quint32)array.at(i + 6 + 1024 * 4)) << 16) + (((quint32)array.at(i + 6 + 1024 * 5)) << 8) + ((quint32)array.at(i + 6 + 1024 * 6))) >> 6);
-
         for (qint32 i = 0; i < 1024; i++)
         {
             // Pong
             //timeStampMCU.append(((((quint32)array.at(i+1024 * 16)) << 16) + (((quint32)array.at(i + 1024*17)) << 8) + ((quint32)array.at(i + 1024*18))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1024 * 18)) << 8) + ((quint16)array.at(i + 1024 * 19))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 8)) << 8) + ((quint16)array.at(i + 1024 * 9))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             //timeStampMCU.append(((((quint32)array.at(i+1024 * 20)) << 16) + (((quint32)array.at(i + 1024*21)) << 8) + ((quint32)array.at(i + 1024*22))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1024 * 22)) << 8) + ((quint16)array.at(i + 1024 * 23))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 10)) << 8) + ((quint16)array.at(i + 1024 * 11))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             //timeStampMCU.append(((((quint32)array.at(i+1024 * 24)) << 16) + (((quint32)array.at(i + 1024*25)) << 8) + ((quint32)array.at(i + 1024*26))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1024 * 26)) << 8) + ((quint16)array.at(i + 1024 * 27))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 12)) << 8) + ((quint16)array.at(i + 1024 * 13))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
             //timeStampMCU.append(((((quint32)array.at(i+1024 * 28)) << 16) + (((quint32)array.at(i + 1024*29)) << 8) + ((quint32)array.at(i + 1024*30))) >> 6);
-            adcData.append(((float)((((((quint16)array.at(i + 1024 * 30)) << 8) + ((quint16)array.at(i + 1024 * 31))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
+            adcData.append(((float)((((((quint16)array.at(i + 1024 * 14)) << 8) + ((quint16)array.at(i + 1024 * 15))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
         }
         emit newMessage(sender.toString(), adcData);
 
         // prepare data for plotting
-        for (quint16 i = 0; i < 8192; i++)
+        for (quint16 i = 0; i < 4096*2; i++)
         {
             plotData.append(QPointF(timeStamp.at(i), adcData.at(i)));
         }
@@ -265,7 +113,8 @@ void MyUDP::readyRead()
         //qDebug() << adcData.mid(1024*5,1024);
         //qDebug() << adcData.mid(1024*6,1024);
         //qDebug() << adcData.mid(1024 * 7, 1024);
-        qDebug() << timeStampMCU;
+        //qDebug() << adcData;
+        //qDebug() << timeStampMCU.mid(0, 1024);
 
         array.clear();
         adcData.clear();
