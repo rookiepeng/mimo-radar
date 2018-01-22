@@ -14,6 +14,6 @@
 
 void InitAdcDma();
 void ADCIntHandler();
-void ADCLong2Char(unsigned long *adcBuffer);
+void ADCLong2Char(unsigned short *adcBuffer);
 
 #endif /* ADC_CONF_H_ */
