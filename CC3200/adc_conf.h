@@ -13,7 +13,11 @@
 #define ADC_BUFF_SIZE 1024
 
 void InitAdcDma();
-void ADCIntHandler();
+//void ADCIntHandler();
+void ADCIntHandlerCH0();
+void ADCIntHandlerCH1();
+void ADCIntHandlerCH2();
+void ADCIntHandlerCH3();
 void ADCLong2Char(unsigned short *adcBuffer);
 
 #endif /* ADC_CONF_H_ */
