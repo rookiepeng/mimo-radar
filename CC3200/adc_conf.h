@@ -13,7 +13,6 @@
 #define ADC_BUFF_SIZE 1024
 
 void InitAdcDma();
-//void ADCIntHandler();
 void ADCIntHandlerCH0();
 void ADCIntHandlerCH1();
 void ADCIntHandlerCH2();

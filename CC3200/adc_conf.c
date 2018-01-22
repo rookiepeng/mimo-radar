@@ -172,13 +172,15 @@ void ADCIntHandlerCH0()
         if (ulMode == UDMA_MODE_STOP)
         {
 
-            UDMASetupTransfer(UDMA_CH14_ADC_CH0 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
-                              ADC_BUFF_SIZE,
-                              UDMA_SIZE_16, UDMA_ARB_1,
-                              (void *)(ADC_BASE + ADC_O_channel0FIFODATA), UDMA_SRC_INC_NONE,
-                              (void *)&(g_ucADCCH0BuffALT), UDMA_DST_INC_16);
+            //UDMASetupTransfer(UDMA_CH14_ADC_CH0 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
+            //                  ADC_BUFF_SIZE,
+            //                  UDMA_SIZE_16, UDMA_ARB_1,
+            //                  (void *)(ADC_BASE + ADC_O_channel0FIFODATA), UDMA_SRC_INC_NONE,
+            //                  (void *)&(g_ucADCCH0BuffALT), UDMA_DST_INC_16);
 
             //UDP_send("CH0", 3);
+            ADCDMADisable(ADC_BASE, ADC_CH_0);
+            ADCIntDisable(ADC_BASE, ADC_CH_0, ADC_DMA_DONE);
         }
     }
 }
@@ -204,12 +206,14 @@ void ADCIntHandlerCH1()
         ulMode = MAP_uDMAChannelModeGet(UDMA_CH15_ADC_CH1 | UDMA_ALT_SELECT);
         if (ulMode == UDMA_MODE_STOP)
         {
-            UDMASetupTransfer(UDMA_CH15_ADC_CH1 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
-                              ADC_BUFF_SIZE,
-                              UDMA_SIZE_16, UDMA_ARB_1,
-                              (void *)(ADC_BASE + ADC_O_channel2FIFODATA), UDMA_SRC_INC_NONE,
-                              (void *)&(g_ucADCCH1BuffALT), UDMA_DST_INC_16);
+            //UDMASetupTransfer(UDMA_CH15_ADC_CH1 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
+            //                  ADC_BUFF_SIZE,
+            //                  UDMA_SIZE_16, UDMA_ARB_1,
+            //                  (void *)(ADC_BASE + ADC_O_channel2FIFODATA), UDMA_SRC_INC_NONE,
+            //                  (void *)&(g_ucADCCH1BuffALT), UDMA_DST_INC_16);
             //UDP_send("CH1", 3);
+            ADCDMADisable(ADC_BASE, ADC_CH_1);
+            ADCIntDisable(ADC_BASE, ADC_CH_1, ADC_DMA_DONE);
         }
     }
 }
@@ -235,12 +239,14 @@ void ADCIntHandlerCH2()
         ulMode = MAP_uDMAChannelModeGet(UDMA_CH16_ADC_CH2 | UDMA_ALT_SELECT);
         if (ulMode == UDMA_MODE_STOP)
         {
-            UDMASetupTransfer(UDMA_CH16_ADC_CH2 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
-                              ADC_BUFF_SIZE,
-                              UDMA_SIZE_16, UDMA_ARB_1,
-                              (void *)(ADC_BASE + ADC_O_channel4FIFODATA), UDMA_SRC_INC_NONE,
-                              (void *)&(g_ucADCCH2BuffALT), UDMA_DST_INC_16);
+            //UDMASetupTransfer(UDMA_CH16_ADC_CH2 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
+            //                  ADC_BUFF_SIZE,
+            //                  UDMA_SIZE_16, UDMA_ARB_1,
+            //                  (void *)(ADC_BASE + ADC_O_channel4FIFODATA), UDMA_SRC_INC_NONE,
+            //                  (void *)&(g_ucADCCH2BuffALT), UDMA_DST_INC_16);
             //UDP_send("CH2", 3);
+            ADCDMADisable(ADC_BASE, ADC_CH_2);
+            ADCIntDisable(ADC_BASE, ADC_CH_2, ADC_DMA_DONE);
         }
     }
 }
@@ -266,17 +272,13 @@ void ADCIntHandlerCH3()
         ulMode = MAP_uDMAChannelModeGet(UDMA_CH17_ADC_CH3 | UDMA_ALT_SELECT);
         if (ulMode == UDMA_MODE_STOP)
         {
-            UDMASetupTransfer(UDMA_CH17_ADC_CH3 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
-                              ADC_BUFF_SIZE,
-                              UDMA_SIZE_16, UDMA_ARB_1,
-                              (void *)(ADC_BASE + ADC_O_channel6FIFODATA), UDMA_SRC_INC_NONE,
-                              (void *)&(g_ucADCCH3BuffALT), UDMA_DST_INC_16);
+            //UDMASetupTransfer(UDMA_CH17_ADC_CH3 | UDMA_ALT_SELECT, UDMA_MODE_PINGPONG,
+            //                  ADC_BUFF_SIZE,
+            //                  UDMA_SIZE_16, UDMA_ARB_1,
+            //                  (void *)(ADC_BASE + ADC_O_channel6FIFODATA), UDMA_SRC_INC_NONE,
+            //                  (void *)&(g_ucADCCH3BuffALT), UDMA_DST_INC_16);
 
             //UDP_send("CH3", 3);
-
-            ADCDMADisable(ADC_BASE, ADC_CH_0);
-            ADCDMADisable(ADC_BASE, ADC_CH_1);
-            ADCDMADisable(ADC_BASE, ADC_CH_2);
             ADCDMADisable(ADC_BASE, ADC_CH_3);
             ADCIntDisable(ADC_BASE, ADC_CH_3, ADC_DMA_DONE);
             ADCDisable(ADC_BASE);
