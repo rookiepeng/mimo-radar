@@ -17,7 +17,7 @@ extern void (*const g_pfnVectors[])(void);
 extern uVectorEntry __vector_table;
 #endif
 
-#define APP_NAME "PROJ-ACQR"
+#define APP_NAME "MIMO-Radar"
 #define APPLICATION_VERSION "1.0.0"
 #define OSI_STACK_SIZE 2048
 
