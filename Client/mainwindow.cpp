@@ -217,9 +217,10 @@ void MainWindow::onDisconnected()
 void MainWindow::onAppendMessage(const QString &from, const QString &message)
 {
     //if (from.isEmpty() || message.isEmpty())
-    //{
-    //    return;
-    //}
+    if (message.isEmpty())
+    {
+        return;
+    }
 
     QTextCursor cursor(ui->textBrowser_TcpClientMessage->textCursor());
     cursor.movePosition(QTextCursor::End);

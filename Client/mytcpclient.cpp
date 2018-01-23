@@ -78,6 +78,7 @@ void MyTCPClient::messageReady()
     QString tempString = tcpSocket->readAll();
     //emit newMessage(tcpSocket->peerAddress().toString(), tempString);
 
+    /*
     if (tempString.left(7) == "ADCDATA")
     {
         acceptingADCData = true;
@@ -118,6 +119,7 @@ void MyTCPClient::messageReady()
         adcData.clear();
         timeStamp.clear();
     }
+    */
 }
 
 void MyTCPClient::sendMessage(QString string)
