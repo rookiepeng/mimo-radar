@@ -76,7 +76,7 @@ void MyTCPClient::messageReady()
 {
     //array = tcpSocket->readAll();
     QString tempString = tcpSocket->readAll();
-    //emit newMessage(tcpSocket->peerAddress().toString(), tempString);
+    emit newMessage(tcpSocket->peerAddress().toString(), tempString);
 
     /*
     if (tempString.left(7) == "ADCDATA")
