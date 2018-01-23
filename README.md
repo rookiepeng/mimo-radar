@@ -31,7 +31,7 @@ Currently, there is only a PC client avaiable, which is built by Qt5.
 The source code of the PC client can be found in
 
 ```
-/PC Client
+/Client
 ```
 
 ### Build
