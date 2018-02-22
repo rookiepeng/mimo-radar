@@ -625,9 +625,9 @@ void Tx_Pulse()
 void Radar_Init()
 {
     VCO_Init(0);
-    VCO_Init(1);
+    //VCO_Init(1);
     PLL_Init(0);
-    PLL_Init(1);
+    //PLL_Init(1);
     RF_Switch(0);
     RX_Init_Off();
 }
