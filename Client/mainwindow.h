@@ -68,6 +68,8 @@ private slots:
 
   void saveToDir();
 
+  void startAdc();
+
 public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();

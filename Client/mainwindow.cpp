@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(myudp, SIGNAL(newData(QVector<QPointF>)), this, SLOT(openPlot()));
 
     connect(ui->toolButton_SaveTo, SIGNAL(clicked(bool)), this, SLOT(saveToDir()));
+    connect(ui->button_Start, SIGNAL(clicked(bool)),this,SLOT(startAdc()));
 }
 
 /***********************************
@@ -101,6 +102,8 @@ void MainWindow::onTcpClientNewConnection(const QString &from, quint16 port)
     connect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
     connect(ui->button_TcpClientSend, SIGNAL(clicked()), this, SLOT(onTcpClientSendMessage()));
     connect(ui->lineEdit_TcpClientSend, SIGNAL(returnPressed()), this, SLOT(onTcpClientSendMessage()));
+
+    ui->button_Start->setDisabled(false);
 
     ui->statusBar->showMessage("Connected to Radar: " + from + ": " + QString::number(port), 0);
 }
@@ -196,6 +199,8 @@ void MainWindow::onDisconnected()
     ui->button_Connect->setDisabled(false);
     ui->lineEdit_TcpClientTargetIP->setDisabled(false);
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
+
+    ui->button_Start->setDisabled(true);
 
     mytcpclient->closeClient();
     mytcpclient->close();
@@ -527,4 +532,9 @@ void MainWindow::saveToDir()
     }
     //qDebug() << fileDir;
     //qDebug() << QDir::currentPath();
+}
+
+void MainWindow::startAdc()
+{
+    mytcpclient->sendMessage("ADC START");
 }
