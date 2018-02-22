@@ -58,6 +58,10 @@ unsigned char g_ucD1Pin, g_ucD2Pin, g_ucD3Pin, g_ucD4Pin, g_ucStorePin;
 unsigned int g_uiS0Port = 0, g_uiS1Port = 0, g_uiS2Port = 0, g_uiS3Port = 0;
 unsigned char g_ucS0Pin, g_ucS1Pin, g_ucS2Pin, g_ucS3Pin;
 
+// TX pulse
+unsigned int g_uiP0Port = 0;
+unsigned char g_ucP0Pin;
+
 //****************************************************************************
 //
 //! Get the port and pin of a given GPIO
@@ -193,6 +197,13 @@ void GPIO_PinConfigure()
     GPIO_GetPortNPin(GPIO_S3,
                      &g_uiS3Port,
                      &g_ucS3Pin);
+
+    GPIO_GetPortNPin(GPIO_P0,
+                     &g_uiP0Port,
+                     &g_ucP0Pin);
+
+    GPIO_Set(GPIO_P0, g_uiP0Port, g_ucP0Pin, 0);
+
 }
 
 //*****************************************************************************

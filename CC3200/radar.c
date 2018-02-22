@@ -14,6 +14,7 @@
 
 #include "spi_conf.h"
 #include "gpio_conf.h"
+#include "radar.h"
 
 // Port and Pin for decoder control
 extern unsigned int g_uiAPort, g_uiBPort, g_uiCPort;
@@ -30,6 +31,10 @@ extern unsigned char g_ucD1Pin, g_ucD2Pin, g_ucD3Pin, g_ucD4Pin, g_ucStorePin;
 // Port and Pin for baseband switch
 extern unsigned int g_uiS0Port, g_uiS1Port, g_uiS2Port, g_uiS3Port;
 extern unsigned char g_ucS0Pin, g_ucS1Pin, g_ucS2Pin, g_ucS3Pin;
+
+// TX pulse
+extern unsigned int g_uiP0Port;
+extern unsigned char g_ucP0Pin;
 
 static unsigned char l_ucTxChannel = 0;
 static unsigned char l_ucRxChannel = 0;
@@ -321,15 +326,40 @@ void PLL_Init(unsigned char pllNum)
     {
         CS_Decoder('3');
     }
-    Master_Send(0x00000007);
-    Master_Send(0x00001F46);
-    Master_Send(0x00380835);
-    Master_Send(0x00601904);
-    Master_Send(0x00820443);
+    //Master_Send(0x00000007);
+    //Master_Send(0x00001F46);
+    //Master_Send(0x00380835);
+    //Master_Send(0x00601904);
+    //Master_Send(0x00820443);
+    //Master_Send(0x07408052);
+    //Master_Send(0x00000009);
+    //Master_Send(0x00960000);
+    Master_Send(0x00100007);
+    Master_Send(0x0000270E);
+    Master_Send(0x003812C5);
+    Master_Send(0x00781004);
+    Master_Send(0x00820C43);
     Master_Send(0x07408052);
     Master_Send(0x00000009);
-    Master_Send(0x00960000);
+    Master_Send(0x78960000);
     GPIO_LedOff(LED1);
+    Tx_Pulse();
+}
+
+void Chirp_Enable()
+{
+    CS_Decoder('1');
+    Master_Send(0xF8960000);
+    CS_Decoder('3');
+    Master_Send(0xF8960000);
+}
+
+void Chirp_Disable()
+{
+    CS_Decoder('1');
+    Master_Send(0x78960000);
+    CS_Decoder('3');
+    Master_Send(0x78960000);
 }
 
 void RX_Init_Off()
@@ -584,6 +614,12 @@ void RX(unsigned char rxNum)
     }
     TX(l_ucTxChannel);
     GPIO_LedOff(LED1);
+}
+
+void Tx_Pulse()
+{
+    GPIO_Set(GPIO_P0, g_uiP0Port, g_ucP0Pin, 1);
+    GPIO_Set(GPIO_P0, g_uiP0Port, g_ucP0Pin, 0);
 }
 
 void Radar_Init()

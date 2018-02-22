@@ -121,4 +121,9 @@ void PinMuxConfig(void)
         PinTypeADC(PIN_59, PIN_MODE_255);
         // Configure PIN_60 for ADC0 ADC_CH3
         PinTypeADC(PIN_60, PIN_MODE_255);
+
+        // TX pulse
+        // Configure PIN_01 for GPIO Output
+        PinTypeGPIO(PIN_01, PIN_MODE_0, false);
+        GPIODirModeSet(GPIOA1_BASE, 0x4, GPIO_DIR_MODE_OUT);
 }

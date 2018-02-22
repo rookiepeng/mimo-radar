@@ -52,6 +52,10 @@ char g_cBsdBuf[BUF_SIZE];
 
 extern unsigned char g_ulStatus; //SimpleLink Status
 
+// TX pulse
+extern unsigned int g_uiP0Port;
+extern unsigned char g_ucP0Pin;
+
 int iLocalAddrSize;
 SlSockAddrIn_t sClientTCPAddr;
 SlSockAddrIn_t sClientUDPAddr;
@@ -338,7 +342,19 @@ void CommandProcess()
     }
     else if (strcasecmp(g_cBsdBuf, "ADC START") == 0)
     {
+        Chirp_Enable();
+        Tx_Pulse();
         InitAdcDma();
+    }
+    else if (strcasecmp(g_cBsdBuf, "PULSE ON") == 0)
+    {
+        GPIO_Set(GPIO_P0, g_uiP0Port, g_ucP0Pin, 1);
+        TCP_send(g_cBsdBuf, strlen(g_cBsdBuf));
+    }
+    else if (strcasecmp(g_cBsdBuf, "PULSE OFF") == 0)
+    {
+        GPIO_Set(GPIO_P0, g_uiP0Port, g_ucP0Pin, 0);
+        TCP_send(g_cBsdBuf, strlen(g_cBsdBuf));
     }
 
     for (iCounter = 0; iCounter < BUF_SIZE; iCounter++)

@@ -19,5 +19,8 @@ void TX_Off();
 void TX(unsigned char txNum);
 void RX(unsigned char rxNum);
 void Radar_Init();
+void Tx_Pulse();
+void Chirp_Enable();
+void Chirp_Disable();
 
 #endif /* RADAR_H_ */

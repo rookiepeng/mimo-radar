@@ -27,6 +27,7 @@
 #include "adc_conf.h"
 #include "app_conf.h"
 #include "tcpudp.h"
+#include "radar.h"
 
 unsigned short g_ucADCCH0BuffPRI[ADC_BUFF_SIZE];
 unsigned short g_ucADCCH0BuffALT[ADC_BUFF_SIZE];
@@ -294,6 +295,8 @@ void ADCIntHandlerCH3()
             ADCLong2Char(g_ucADCCH2BuffALT);
             ADCLong2Char(g_ucADCCH3BuffALT);
             UDP_send("ADCSTOP", 7);
+            Chirp_Disable();
+            Tx_Pulse();
         }
     }
 }

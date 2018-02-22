@@ -46,6 +46,8 @@ typedef enum {
 #define LED0 24
 #define LED1 28
 
+#define GPIO_P0 10
+
 void GPIO_GetPortNPin(unsigned char ucPin, unsigned int *puiGPIOPort, unsigned char *pucGPIOPin);
 void GPIO_Set(unsigned char ucPin, unsigned int uiGPIOPort, unsigned char ucGPIOPin, unsigned char ucGPIOValue);
 unsigned char GPIO_Get(unsigned char ucPin, unsigned int uiGPIOPort, unsigned char ucGPIOPin);
