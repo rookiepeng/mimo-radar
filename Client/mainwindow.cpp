@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(myudp, SIGNAL(newData(QVector<QPointF>)), this, SLOT(openPlot()));
 
     connect(ui->toolButton_SaveTo, SIGNAL(clicked(bool)), this, SLOT(saveToDir()));
+    connect(ui->button_Start, SIGNAL(clicked(bool)),this,SLOT(startAdc()));
 }
 
 /***********************************
@@ -101,6 +102,8 @@ void MainWindow::onTcpClientNewConnection(const QString &from, quint16 port)
     connect(mytcpclient, SIGNAL(newMessage(QString, QString)), this, SLOT(onAppendMessage(QString, QString)));
     connect(ui->button_TcpClientSend, SIGNAL(clicked()), this, SLOT(onTcpClientSendMessage()));
     connect(ui->lineEdit_TcpClientSend, SIGNAL(returnPressed()), this, SLOT(onTcpClientSendMessage()));
+
+    ui->button_Start->setDisabled(false);
 
     ui->statusBar->showMessage("Connected to Radar: " + from + ": " + QString::number(port), 0);
 }
@@ -197,6 +200,8 @@ void MainWindow::onDisconnected()
     ui->lineEdit_TcpClientTargetIP->setDisabled(false);
     ui->lineEdit_TcpClientTargetPort->setDisabled(false);
 
+    ui->button_Start->setDisabled(true);
+
     mytcpclient->closeClient();
     mytcpclient->close();
 
@@ -216,8 +221,7 @@ void MainWindow::onDisconnected()
  ***********************************/
 void MainWindow::onAppendMessage(const QString &from, const QString &message)
 {
-    //if (from.isEmpty() || message.isEmpty())
-    if (message.isEmpty())
+    if (from.isEmpty() || message.isEmpty())
     {
         return;
     }
@@ -250,16 +254,16 @@ void MainWindow::onAppendMessage(const QString &from, const QString &message)
 
 void MainWindow::onAppendMessage(const QString &from, const QVector<float> &data)
 {
-    //if (from.isEmpty() || message.isEmpty())
-    //{
-    //    return;
-    //}
+    if (from.isEmpty() || data.isEmpty())
+    {
+        return;
+    }
 
-    QTextCursor cursor(ui->textBrowser_TcpClientMessage->textCursor());
-    cursor.movePosition(QTextCursor::End);
+    //QTextCursor cursor(ui->textBrowser_TcpClientMessage->textCursor());
+    //cursor.movePosition(QTextCursor::End);
 
-    QTextTable *table = cursor.insertTable(1, 2, tableFormatData);
-    table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
+    //QTextTable *table = cursor.insertTable(1, 2, tableFormatData);
+    //table->cellAt(0, 0).firstCursorPosition().insertText('<' + from + "> ");
 
     QString dataString;
     qint16 i;
@@ -269,20 +273,23 @@ void MainWindow::onAppendMessage(const QString &from, const QVector<float> &data
     }
     dataString.append(QString::number(data.at(i)));
 
-    table->cellAt(0, 1).firstCursorPosition().insertText(dataString);
+    //table->cellAt(0, 1).firstCursorPosition().insertText(dataString);
 
-    QScrollBar *bar = ui->textBrowser_TcpClientMessage->verticalScrollBar();
-    bar->setValue(bar->maximum());
+    //QScrollBar *bar = ui->textBrowser_TcpClientMessage->verticalScrollBar();
+    //bar->setValue(bar->maximum());
 
     //qDebug()<<QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
 
-    QString filename = fileDir + "/TX_" + txChannel + " RX_" + rxChannel + " " + QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
-    QFile fileout(filename);
-    if (fileout.open(QFile::ReadWrite | QFile::Text))
+    if (ui->checkBox_Save->isChecked())
     {
-        QTextStream out(&fileout);
-        out << dataString;
-        fileout.close();
+        QString filename = fileDir + "/TX_" + txChannel + " RX_" + rxChannel + " " + QDateTime::currentDateTime().toString("MMddyyyy_hhmmss");
+        QFile fileout(filename);
+        if (fileout.open(QFile::ReadWrite | QFile::Text))
+        {
+            QTextStream out(&fileout);
+            out << dataString;
+            fileout.close();
+        }
     }
 }
 
@@ -337,6 +344,8 @@ void MainWindow::initUI()
     ui->button_TcpClientSend->setDisabled(true);
     ui->lineEdit_TcpClientSend->setDisabled(true);
     ui->textBrowser_TcpClientMessage->setDisabled(true);
+
+    ui->button_Start->setDisabled(true);
 
     ui->statusBar->showMessage("Disconnected", 0);
 
@@ -432,6 +441,8 @@ void MainWindow::loadSettings()
     ui->lineEdit_SaveTo->setText(settings.value("DATADIR", QDir::currentPath()).toString());
     fileDir = ui->lineEdit_SaveTo->text();
 
+    ui->checkBox_Save->setChecked(settings.value("SAVEDATA", "TRUE").toString()=="TRUE");
+
     int index = settings.value("interfaceIndex", 0).toInt();
     if (ui->comboBox_Interface->count() >= index)
     {
@@ -473,6 +484,16 @@ void MainWindow::saveSettings()
     settings.setValue("INTERFACE_INDEX", ui->comboBox_Interface->currentIndex());
 
     settings.setValue("DATADIR", ui->lineEdit_SaveTo->text());
+
+    if(ui->checkBox_Save->isChecked())
+    {
+        settings.setValue("SAVEDATA", "TRUE");
+    }
+    else
+    {
+        settings.setValue("SAVEDATA", "FALSE");
+    }
+
 
     settings.sync();
 }
@@ -527,4 +548,9 @@ void MainWindow::saveToDir()
     }
     //qDebug() << fileDir;
     //qDebug() << QDir::currentPath();
+}
+
+void MainWindow::startAdc()
+{
+    mytcpclient->sendMessage("ADC START");
 }
