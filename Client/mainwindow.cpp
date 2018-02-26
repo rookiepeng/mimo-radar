@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(myudp, SIGNAL(newData(QVector<QPointF>)), this, SLOT(openPlot()));
 
     connect(ui->toolButton_SaveTo, SIGNAL(clicked(bool)), this, SLOT(saveToDir()));
-    connect(ui->button_Start, SIGNAL(clicked(bool)),this,SLOT(startAdc()));
+    connect(ui->button_Start, SIGNAL(clicked(bool)), this, SLOT(startAdc()));
 }
 
 /***********************************
@@ -441,7 +441,7 @@ void MainWindow::loadSettings()
     ui->lineEdit_SaveTo->setText(settings.value("DATADIR", QDir::currentPath()).toString());
     fileDir = ui->lineEdit_SaveTo->text();
 
-    ui->checkBox_Save->setChecked(settings.value("SAVEDATA", "TRUE").toString()=="TRUE");
+    ui->checkBox_Save->setChecked(settings.value("SAVEDATA", "TRUE").toString() == "TRUE");
 
     int index = settings.value("interfaceIndex", 0).toInt();
     if (ui->comboBox_Interface->count() >= index)
@@ -485,7 +485,7 @@ void MainWindow::saveSettings()
 
     settings.setValue("DATADIR", ui->lineEdit_SaveTo->text());
 
-    if(ui->checkBox_Save->isChecked())
+    if (ui->checkBox_Save->isChecked())
     {
         settings.setValue("SAVEDATA", "TRUE");
     }
@@ -493,7 +493,6 @@ void MainWindow::saveSettings()
     {
         settings.setValue("SAVEDATA", "FALSE");
     }
-
 
     settings.sync();
 }

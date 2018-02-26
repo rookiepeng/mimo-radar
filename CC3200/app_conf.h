@@ -18,7 +18,7 @@ extern uVectorEntry __vector_table;
 #endif
 
 #define APP_NAME "MIMO-Radar"
-#define APPLICATION_VERSION "1.0.0"
+#define APPLICATION_VERSION "1.1"
 #define OSI_STACK_SIZE 2048
 
 #define NOTERM 1

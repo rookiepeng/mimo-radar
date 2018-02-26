@@ -70,7 +70,7 @@ void MyUDP::readyRead()
         acceptingADCData = false;
         array = array.mid(7, array.size() - 14);
         qint32 i;
-        for (i = 0; i < 1024; i ++)
+        for (i = 0; i < 1024; i++)
         {
             // Ping
             adcData.append(((float)((((((quint16)array.at(i + 1024 * 0)) << 8) + ((quint16)array.at(i + 1024 * 1))) >> 2) & 0x0FFF)) / pow(2, 12) * 1.48);
@@ -97,7 +97,7 @@ void MyUDP::readyRead()
         emit newMessage(sender.toString(), adcData);
 
         // prepare data for plotting
-        for (quint16 i = 0; i < 4096*2; i++)
+        for (quint16 i = 0; i < 4096 * 2; i++)
         {
             plotData.append(QPointF(timeStamp.at(i), adcData.at(i)));
         }

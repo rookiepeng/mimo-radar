@@ -144,7 +144,7 @@ void BsdTcpServer(unsigned short usPort)
         // accepts a connection form a TCP client, if there is any
         // otherwise returns SL_EAGAIN
         iClientTCPSockID = sl_Accept(iSockID, (struct SlSockAddr_t *)&sClientTCPAddr,
-                               (SlSocklen_t *)&iClientAddrSize);
+                                     (SlSocklen_t *)&iClientAddrSize);
         if (iClientTCPSockID < 0)
         {
             // error
@@ -225,7 +225,7 @@ int UDP_send(char *g_ulBuffer, short sBufLen)
         // error
         sl_Close(iClientUDPSockID);
 #ifndef NOTERM
-            ASSERT_ON_ERROR(SEND_ERROR);
+        ASSERT_ON_ERROR(SEND_ERROR);
 #endif
     }
 
@@ -460,7 +460,6 @@ void CommandProcess()
 
     //return SUCCESS;
 }*/
-
 
 //****************************************************************************
 //
