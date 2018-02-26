@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-#define SSID "PROJ-ACQR"
+#define SSID "MIMO-RADAR"
 
 //*****************************************************************************
 //

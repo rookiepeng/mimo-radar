@@ -335,11 +335,6 @@ void CommandProcess()
         RX(strtoul(&g_cBsdBuf[3], NULL, 16));
         TCP_send(g_cBsdBuf, strlen(g_cBsdBuf));
     }
-    else if (strcasecmp(g_cBsdBuf, "UDP") == 0)
-    {
-        char temp[]="abcdefghijklmnopqrstuvwxyz";
-        UDP_send(temp, 26);
-    }
     else if (strcasecmp(g_cBsdBuf, "ADC START") == 0)
     {
         Chirp_Enable();
