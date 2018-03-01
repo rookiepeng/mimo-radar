@@ -2,6 +2,7 @@
 //    Copyright (C) 2017  Zhengyu Peng, zhengyu.peng@ttu.edu
 *****************************************************************************************/
 
+#include <math.h>
 #include "myudp.h"
 
 MyUDP::MyUDP(QObject *parent) : QUdpSocket(parent)
